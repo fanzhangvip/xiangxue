@@ -1,9 +1,5 @@
 package com.zero.xiangxue.handlerdemo;
 
-/**
- * Created by honjane on 2017/3/12.
- */
-
 public final class MyLooper {
 
 

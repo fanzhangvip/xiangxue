@@ -7,10 +7,6 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * Created by honjane on 2017/3/12.
- */
-
 public class MyMessageQueue {
     private static final String TAG = MyMessageQueue.class.getName();
     MyMessage[] mItems;

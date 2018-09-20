@@ -841,7 +841,222 @@ void recycleUnchecked() {
 * Handler的回调方法：Handler.mCallback.handleMessage(msg)，优先级仅次于1；
 * Handler的默认方法：Handler.handleMessage(msg)，优先级最低。
 
+### 手写Handler机制
+* MyHandler
+```
+public class MyHandler {
+    private MyLooper mLooper;
+    private MyMessageQueue mQueue;
 
+    public MyHandler() {
+        mLooper = MyLooper.myLooper();
+        mQueue = mLooper.mQueue;
+    }
+
+    public void sendMessage(MyMessage message) {
+        message.target = this;
+        mQueue.enqueueMessage(message);
+    }
+
+    /**
+     * 子类处理消息
+     *
+     * @param message
+     */
+    public void handleMessage(MyMessage message) {
+
+    }
+
+    /**
+     * 分发消息
+     *
+     * @param message
+     */
+    public void dispatchMessage(MyMessage message) {
+        handleMessage(message);
+    }
+}
+```
+* MyLooper
+```
+public final class MyLooper {
+
+
+    static final ThreadLocal<MyLooper> sThreadLocal = new ThreadLocal<>();
+    public MyMessageQueue mQueue;
+
+    public MyLooper() {
+        mQueue = new MyMessageQueue();
+    }
+
+    /**
+     * 实例化一个属于当前线程的looper对象
+     */
+    public static void prepare() {
+        if (sThreadLocal.get() != null) {
+            throw new RuntimeException("Only one MyLooper may be created per thread");
+        }
+        sThreadLocal.set(new MyLooper());
+    }
+
+    public static MyLooper myLooper() {
+        return sThreadLocal.get();
+    }
+
+    /**
+     * 轮询消息队列
+     */
+    public static void loop() {
+        MyLooper me = myLooper();
+        MyMessageQueue queue = me.mQueue;
+        //轮询
+        MyMessage msg;
+        for (; ; ) {
+            msg = queue.next();
+            //获取到发送消息的 msg.target （handler）本身，然后分发消息
+            if (msg == null || msg.target == null) {
+                continue;
+            }
+
+            msg.target.dispatchMessage(msg);
+
+        }
+    }
+}
+```
+* MyMessage
+```
+public class MyMessage {
+
+    public int what;
+
+    public int arg1;
+
+
+    public int arg2;
+
+    public Object obj;
+
+    public MyHandler target;
+
+    @Override
+    public String toString() {
+        return obj.toString();
+    }
+}
+```
+* MyMessageQueue
+```
+public class MyMessageQueue {
+    private static final String TAG = MyMessageQueue.class.getName();
+    MyMessage[] mItems;
+    int mPutIndex;
+    //队列中消息数
+    private int mCount;
+    private int mTakeIndex;
+    //锁
+    Lock mLock;
+    //条件变量
+    Condition mNotEmpty;
+    Condition mNotFull;
+
+    public MyMessageQueue() {
+        mItems = new MyMessage[50];
+        mLock = new ReentrantLock();
+        mNotEmpty = mLock.newCondition();
+        mNotFull = mLock.newCondition();
+    }
+
+    /**
+     * 消息队列取消息 出队
+     *
+     * @return
+     */
+    MyMessage next() {
+        MyMessage msg = null;
+        try {
+            mLock.lock();
+            //检查队列是否空了
+            while (mCount <= 0) {
+                //阻塞
+                mNotEmpty.await();
+                Log.i(TAG, "队列空了，阻塞");
+            }
+            msg = mItems[mTakeIndex];//可能空
+            //取了之后置空
+            mItems[mTakeIndex] = null;
+            mTakeIndex = (++mTakeIndex >= mItems.length) ? 0 : mTakeIndex;
+            mCount--;
+            //通知生产这生产
+            mNotFull.signalAll();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            mLock.unlock();
+        }
+
+        return msg;
+    }
+
+    /**
+     * 添加消息进队列
+     *
+     * @param message
+     */
+
+    public void enqueueMessage(MyMessage message) {
+
+        try {
+            mLock.lock();
+            //检查队列是否满了
+            while (mCount >= mItems.length) {
+                //阻塞
+                mNotFull.await();
+                Log.i(TAG, "队列满了，阻塞");
+            }
+
+            mItems[mPutIndex] = message;
+            mPutIndex = (++mPutIndex >= mItems.length) ? 0 : mPutIndex;
+            mCount++;
+            //通知消费者消费
+            mNotEmpty.signalAll();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            mLock.unlock();
+        }
+
+
+    }
+}
+```
+* Test 手写Handler机制
+```
+    private void customHandlerTest() {
+        MyLooper.prepare();
+        final MyHandler handler = new MyHandler() {
+            @Override
+            public void handleMessage(MyMessage message) {
+                Log.i(TAG, "main thread recv message------" + message.obj.toString());
+            }
+        };
+
+        for (int i = 0; i < 5; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    MyMessage msg = new MyMessage();
+                    synchronized (UUID.class) {
+                        msg.obj = UUID.randomUUID().toString();
+                    }
+                    Log.i(TAG, "sup thread " + Thread.currentThread().getName() + ": send message------" + msg.obj);
+                    handler.sendMessage(msg);
+                }
+            }).start();
+        }
+        MyLooper.loop();
+    }
+```
 
 
 
