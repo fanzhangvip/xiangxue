@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--TODO: 第二步：创建菜单列表，跟navigation下面的目的地id相对应-->
+    <item
+        android:id="@+id/oneFragment1"
+        android:icon="@mipmap/ic_launcher"
+        android:title="商品" />
+    <item
+        android:id="@+id/twoFragment2"
+        android:icon="@mipmap/ic_launcher"
+        android:title="历史" />
+    <item
+        android:id="@+id/threeFragment2"
+        android:icon="@mipmap/ic_launcher"
+        android:title="我的" />
+    <item
+        android:id="@+id/fourFragment2"
+        android:icon="@mipmap/ic_launcher"
+        android:title="关于" />
+</menu>

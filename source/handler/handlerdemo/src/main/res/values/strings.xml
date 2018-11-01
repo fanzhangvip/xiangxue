@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">handlerDemo</string>
+
+    <string name="handler_demo">handler用法演示</string>
+
+    <string name="handler_usage_1">handler用法1</string>
+    <string name="handler_usage_2">handler用法2</string>
+    <string name="handler_usage_3">handler用法3</string>
+</resources>
