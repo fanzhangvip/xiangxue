@@ -1,0 +1,10 @@
+今日课题：Android高级必备秘密武器-Navigation
+上课时间：2018/10/31 15:30
+授课讲师：Zero老师[享学课堂]
+课程链接：
+课程内容：
+1，Fragment这样使用有什么问题？
+2，五步实现Navigation的使用
+3，站在设计者的角度理解Navigation
+4，jetPack简介
+5，互动答疑。
