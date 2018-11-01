@@ -1,0 +1,100 @@
+
+导航
+尽管 Activity 是系统提供的您的应用界面的入口点，但在相互分享数据以及转场方面，Activity 表现得不够灵活，这就让它不适合作为构建您的应用内导航的理想架构。
+今天，我们宣布推出导航组件，作为构建您的应用内界面的框架，重点是让单 Activity 应用成为首选架构。利用导航组件对 Fragment 的原生支持，您可以获得架构组件的所有好处（例如生命周期和 ViewModel），同时让此组件为您处理 FragmentTransaction 的复杂性。此外，导航组件还可以让您声明我们为您处理的转场。它可以自动构建正确的“向上”和“返回”行为，包含对深层链接的完整支持，并提供了帮助程序，用于将导航关联到合适的 UI 小部件，例如抽屉式导航栏和底部导航。但这些并不是全部！
+Android Studio 3.2 中的导航编辑器让您可以直观地查看和管理导航属性
+
+Navigation导航编辑器作为Android Jetpack和 AndroidX 依赖库的一部分其目标旨在简化Android开发中导航的实现。Navigation可以帮助我们很好的处理Activity和fragment之间通过FragmentTransaction交互的复杂性。另外Navigation也可以很好的处理页面的转场效果。
+
+
+你可能已经明白，Navigation 主要是用来处理 Fragment 的跳转，所以说它并不是用来代替 startActivity，而是用来代替 FragmentTransaction 的相关操作。
+在官方文档里，可以看到一个将传统跳转迁移到 Navigation 的建议。我简单理解为，将原本两个 Activity 之间的跳转，逐渐修改为使用一个 Activity 作为容器，用两个 Fragment 作为页面跳转。
+看到这里，我联想到了在去年，Jake Wharton（目前在谷歌）有这么一个有争议的言论：
+“一个 APP 只需要一个 Activity。”
+在过去，要实现这种方式，就需要去解决复杂的 Fragment 堆栈处理，而且早期的 Fragment 坑比较多，处理不好容易出现页面穿透等问题。现在 Navigation 恰好解决了这些问题。
+这一切联系起来，是不是能说明官方间接支持了「少用 Activity 多用 Fragment」的做法？你怎么看？
+
+Navigation原则   自律给我自由
+
+任何应用内导航的目标应该是为用户提供一致且可预测的体验。为了实现这一目标，Navigation架构组件可帮助你构建符合以下每个导航原则的应用程序。
+
+应用具有固定的起点
+应用应该具有固定起点，即用户从启动器启动应用时看到的界面。此起点也应该是用户在按下后退按钮后返回启动器时看到的最后一个界面。
+
+应用可能存在第一次使用时的设置界面或者登陆界面，这种特殊性的界面不应该被视为应用的起点。
+
+堆栈用来代表应用的“导航状态”
+应用的导航状态应使用后进先出的结构表示。此“导航堆栈”中堆栈底部为应用程序的起始界面，而栈顶为当前界面。
+改变此堆栈的操作必须全部集中在栈顶，要么“pushing”一个新的目标到栈顶，要们从栈顶“poping"一个目标出栈。
+
+“向上”按钮永远不会退出应用
+起点界面中不应该出现向上按钮。当应用是通过其他应用使用deeplink的方式启动时，向上按钮应该将用户带回上层界面而不是当时启动此应用的其他应用。
+
+Up和Back在应用程序任务中是等效的
+当系统返回键不会导致应用程序退出时，如在应用程序的任务栈中，当前用户不处于起点界面，这个时候系统返回键就不会退出应用。这种情况下呢，我们的Up按钮操作应该和系统返回键的操作效果相同。
+
+DeepLink或者Navigate至相同界面生成相同的堆栈
+用户可以在起始界面进入应用程序并导航到一个目标界面。如果可以的话，用户同样可以通过deeplink，跳转到相同的目标界面。上面这两种情况下，针对目标界面，我们应该产生相同的目标堆栈。说白了就是，无论他们如何到达目标界面，用户应该能够使用“Back”或“Up”按钮，都可以在目标界面导航回到起始界面。清除已有导航栈，取而代之的是deeplink的导航栈。
+
+
+仅有上述示例代码毫无意义，通过它们，更应该将其理解为 入门；接下来我们需要做到 了解每一个类的职责，理解框架设计者的思想。
+
+我们先思考这样一个问题：如果让我们实现一个Fragment的导航库，首先要实现什么？
+
+1.NavGraphFragment：导航界面的容器
+答案近在眼前。
+
+即使我们使用原生的API，想展示一个Fragment，我们首先也需要 定义一个容器承载它。以往，它可能是一个 RelativeLayout 或者 FrameLayout，而现在，它被替换成了 NavGraphFragment。
+
+这也就说明了，我们为什么要往Activity的layout文件中提前扔进去一个NavGraphFragment，因为我们需要导航的这些Fragment都展示在NavGraphFragment上面。
+
+app:defaultNavHost=”true”这个属性意味着你的NavGraphFragment将会 拦截系统Back键的点击事件（因为系统的back键会直接关闭Activity而非切换Fragment），你同时 必须重写 Activity的 onSupportNavigateUp() 方法，类似这样：
+
+override fun onSupportNavigateUp()
+        = findNavController(R.id.nav_host_fragment).navigateUp()
+1
+2
+app:navGraph=”@navigation/nav_graph_main”这个属性就很好理解了，它会指向一个navigation_graph的xml文件,这之后，NavGraphFragment就会 导航并展示对应的Fragment。
+
+
+
+KTL
+如果说，去年的Google IO大会掀起了一波 Android开发者们对于 Kotlin 语言学习的热潮的话，那么今年的 IO大会，Google向我们展示出了 Kotlin 排山倒海般势不可挡的推动。
+
+在今年的 Google I/O 大会上，关于 Kotlin，Google 只说了 只言片语：
+
+在过去一年里，Play Store 中用 Kotlin 开发的应用在去年增至 6 倍，在高级开发者中有 35% 的人选择使用 Kotlin 进行开发，95% 的开发者表示很喜欢用 Kotlin 进行 Android 的开发，而且这个数字正在逐月递增。
+这之后，Google就没有再宣布关于 Kotlin 的重大消息或规划了。但是细心的同学可以发现，Google 对于 Kotlin 的 偏向 已经 十分明显：无论是今年IO大会的 代码展示，还是官方文档上的 代码示例，亦或是Google最新 开源Demo的源码，都是以 Kotlin语言为主。
+
+时至今日，我认识的不少小伙伴，对于Kotlin语言都仍旧保持观望的态度，理由大概都是相似的：
+
+我 简单学习 了Kotlin，但是我并不太会用，因为我没有机会在项目中使用它；
+Kotlin相比于Java, 依然还是太年轻，对于成熟的项目来讲，Java依然是短时间不可替代的
+类似种种，事实证明，一年过去了，理由还是一年前的理由，但是 Kotlin 发展的势头已经 突飞猛进，如果说，去年的此时，熟练使用Kotlin语言进行开发 是个人简历中的一大亮点，也许不到明年，这个技能点就将是各中大型公司招聘时 最基本的一个门槛 了。
+
+
+
+
+Android Jetpack 组件以“未捆绑的”库形式提供，这些库不是基础 Android 平台的一部分。这就意味着，我们可以根据自己的需求采用每一个组件。在新的 Android Jetpack 功能发布后，我们可以将其添加到自己的应用中，将我们的应用部署到应用商店并向用户提供新功能，如果我们的行动足够快，所有这些可以在一天内完成！
+
+加速开发
+组件可单独采用，但可以一起使用，同时利用Kotlin语言功能，提高工作效率。（ps：Kotlin可以大大减少代码量，据说可以减少到1/3，请一定要学习kotlin）
+减少并消除样板代码
+Android Jetpack管理诸如后台任务，导航和生命周期管理等繁琐的活动，因此我们可以专注提高应用品质等其他方面。
+构建高品质，强大的应用
+以现代设计实践为基础，Android Jetpack组件可降低崩溃次数并减少内存泄漏，并向后兼容。
+除了这三点外，谷歌想给开发者定制一套标准，比如框架的标准，我们平时MVC，MVP，MVVM等等，现在谷歌自己搞了一套MVP-CLEAN。
+我们从JetPack的四大部分也可以看出，谷歌想要结束混乱的局面，给开发者一个规范，这个对我们开发者也是一件好事，跟着官方走总不会差的。更多参见App体系结构指南
+
+
+affinity是Activity内的一个属性（在ManiFest中对应属性为taskAffinity）。默认情况下，拥有相同affinity的Activity属于同一个Task中
+Task也有affinity属性，它的affinity属性由根Activity（创建Task时第一个被压入栈的Activity）决定
+在默认情况下（我们什么都不设置），所有的Activity的affinity都从Application继承。也就是说Application同样有taskAffinity属性
+Application默认的affinity属性为Manifest的包名
+
+
+
+
+
+
+
