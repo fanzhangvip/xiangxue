@@ -3,6 +3,7 @@
     package="com.enjoy02.enjoyfragmentdemo02">
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,6 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.Bug1Activity" />
+        <activity android:name=".activity.Bug2Activity" />
+        <activity android:name=".activity.Bug3Activity" />
+        <activity android:name=".activity.Bug4Activity" />
+        <activity android:name=".activity.Bug41Activity"/>
+        <activity android:name=".activity.Bug5Activity"/>
     </application>
 
 </manifest>

@@ -15,13 +15,13 @@
         android:layout_marginBottom="31dp"
         android:gravity="center"
         android:text="历史记录"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/add"
         android:layout_width="201dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="282dp"
