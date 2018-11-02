@@ -61,7 +61,6 @@ public class BaseFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        dumpLifeCycle("onCreateView");
         if (fragmentDelegater != null) {
             fragmentDelegater.onCreateView(inflater, container, savedInstanceState);
         }
