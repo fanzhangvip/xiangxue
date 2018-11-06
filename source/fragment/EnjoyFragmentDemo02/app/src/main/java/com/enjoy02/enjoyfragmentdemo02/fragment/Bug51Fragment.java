@@ -1,9 +1,7 @@
 package com.enjoy02.enjoyfragmentdemo02.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.enjoy02.enjoyfragmentdemo02.BaseFragment;
-import com.enjoy02.enjoyfragmentdemo02.FragmentDelegater;
 import com.enjoy02.enjoyfragmentdemo02.R;
 
 
@@ -39,7 +36,14 @@ public class Bug51Fragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Log.i("Zero", "onAttach Bug51Fragment");
         name = getArguments().getString("name");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.i("Zero", "onDetach Bug51Fragment");
     }
 
     @Override

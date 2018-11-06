@@ -20,7 +20,7 @@ public class MyApp extends Application {
         super.onCreate();
         mActivitys = new Stack<>();
         myActLifeCycle = new MyActLifeCycle();
-        registerActivityLifecycleCallbacks(myActLifeCycle);
+//        registerActivityLifecycleCallbacks(myActLifeCycle);
     }
 
     @Override

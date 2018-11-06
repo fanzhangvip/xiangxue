@@ -14,6 +14,7 @@ import com.enjoy02.enjoyfragmentdemo02.activity.Bug2Activity;
 import com.enjoy02.enjoyfragmentdemo02.activity.Bug3Activity;
 import com.enjoy02.enjoyfragmentdemo02.activity.Bug4Activity;
 import com.enjoy02.enjoyfragmentdemo02.activity.Bug5Activity;
+import com.enjoy02.enjoyfragmentdemo02.activity.ViewpagerActivity;
 
 
 public class MainFragment extends ListFragment {
@@ -73,6 +74,10 @@ public class MainFragment extends ListFragment {
             case 4:
                 Intent intent4 = new Intent(getActivity(), Bug5Activity.class);
                 startActivity(intent4);
+                break;
+            case 9:
+                Intent intent9 = new Intent(getActivity(), ViewpagerActivity.class);
+                startActivity(intent9);
                 break;
             default:
                 break;

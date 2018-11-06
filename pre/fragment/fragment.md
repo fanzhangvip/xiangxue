@@ -38,7 +38,9 @@
   * 与onCreateView想对应，当该Fragment的视图被移除时调用
 > onDetach()
   * 与onAttach相对应，当Fragment与Activity关联被取消时调用
----
+  
+  ![](fragment_status.jpg) 
+--------------------------
 ##### 生命周期探究
 * `onHiddenChanged`的回调时机
 1. 当使用add()+show()，hide()跳转新的Fragment时，旧的Fragment回调onHiddenChanged()，不会回调onStop()等生命周期方法

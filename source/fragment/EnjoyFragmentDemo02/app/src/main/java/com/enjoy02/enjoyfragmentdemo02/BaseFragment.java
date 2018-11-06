@@ -1,6 +1,7 @@
 package com.enjoy02.enjoyfragmentdemo02;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,39 +16,11 @@ public class BaseFragment extends Fragment {
 
     FragmentDelegater fragmentDelegater;
 
-    public void setFragmentDelegater(FragmentDelegater fragmentDelegater) {
-        this.fragmentDelegater = fragmentDelegater;
-    }
-
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         if (fragmentDelegater != null) {
-            fragmentDelegater.onHiddenChanged(hidden);
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (fragmentDelegater != null) {
-            fragmentDelegater.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
-        super.onInflate(activity, attrs, savedInstanceState);
-        if (fragmentDelegater != null) {
-            fragmentDelegater.onInflate(activity, attrs, savedInstanceState);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (fragmentDelegater != null) {
-            fragmentDelegater.onAttach(activity);
+            fragmentDelegater.onAttach(context);
         }
     }
 
@@ -108,22 +81,6 @@ public class BaseFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (fragmentDelegater != null) {
-            fragmentDelegater.onSaveInstanceState(outState);
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (fragmentDelegater != null) {
-            fragmentDelegater.onConfigurationChanged(newConfig);
-        }
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         if (fragmentDelegater != null) {
@@ -160,6 +117,59 @@ public class BaseFragment extends Fragment {
         super.onDetach();
         if (fragmentDelegater != null) {
             fragmentDelegater.onDetach();
+        }
+    }
+
+    public void setFragmentDelegater(FragmentDelegater fragmentDelegater) {
+        this.fragmentDelegater = fragmentDelegater;
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (fragmentDelegater != null) {
+            fragmentDelegater.setUserVisibleHint(isVisibleToUser);
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (fragmentDelegater != null) {
+            fragmentDelegater.onHiddenChanged(hidden);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (fragmentDelegater != null) {
+            fragmentDelegater.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
+        super.onInflate(activity, attrs, savedInstanceState);
+        if (fragmentDelegater != null) {
+            fragmentDelegater.onInflate(activity, attrs, savedInstanceState);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (fragmentDelegater != null) {
+            fragmentDelegater.onSaveInstanceState(outState);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (fragmentDelegater != null) {
+            fragmentDelegater.onConfigurationChanged(newConfig);
         }
     }
 

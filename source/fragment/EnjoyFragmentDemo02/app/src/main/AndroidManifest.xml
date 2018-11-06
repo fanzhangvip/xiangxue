@@ -22,7 +22,8 @@
         <activity android:name=".activity.Bug4Activity" />
         <activity android:name=".activity.Bug41Activity"/>
         <activity android:name=".activity.Bug5Activity"/>
-        <activity android:name=".activity.ViewpagerActivity"/>
+        <activity android:name=".activity.ViewpagerActivity"
+            android:theme="@style/ViewPagerTheme"/>
     </application>
 
 </manifest>

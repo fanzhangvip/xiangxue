@@ -1,6 +1,5 @@
 package com.enjoy02.enjoyfragmentdemo02.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,29 +15,46 @@ import android.widget.Toast;
 
 import com.enjoy02.enjoyfragmentdemo02.BaseFragment;
 import com.enjoy02.enjoyfragmentdemo02.R;
+import com.enjoy02.enjoyfragmentdemo02.arch.FragmentObservable;
+import com.enjoy02.enjoyfragmentdemo02.arch.FragmentObserver;
 
 /**
  * TODO: getActivity==null
  */
-public class Bug1Fragment extends BaseFragment {
-
-    private Activity mActivity;
+public class Bug11Fragment extends BaseFragment {
 
     Handler mhandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Toast.makeText(mActivity,"任务执行了",Toast.LENGTH_LONG).show();
-
-
-
-//            if (getActivity() != null) {//getActivity不为null的时候我才执行下面的代码
-//                Toast.makeText(getActivity(), "任务执行了", Toast.LENGTH_LONG).show();
-//            }
+            Toast.makeText(getActivity(), "任务执行了", Toast.LENGTH_LONG).show();
         }
     };
 
+    FragmentObservable fragmentObservable = new FragmentObservable();
+
     class NetWorkTask implements Runnable {
+
+        boolean isCancel = false;
+
+        public NetWorkTask() {
+            fragmentObservable.addObserver(fragmentObserver);
+        }
+
+        FragmentObserver fragmentObserver = new FragmentObserver() {
+            @Override
+            public void onAttach(Context context) {
+
+            }
+
+            @Override
+            public void onDetach() {
+                Log.i("Zero", "观察到fragment生命周期走到onDetach了，任务取消。。。");
+                isCancel = true;
+                mhandler.removeCallbacksAndMessages(null);
+            }
+        };
+
         @Override
         public void run() {
             try {
@@ -46,7 +62,9 @@ public class Bug1Fragment extends BaseFragment {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
+            if (isCancel) {
+                return;
+            }
             mhandler.sendEmptyMessage(1);
         }
     }
@@ -56,8 +74,8 @@ public class Bug1Fragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivity = (Activity)context;
-//        Log.i("Zero", "onAttach : " + getActivity());
+        fragmentObservable.onAttach(context);
+        Log.i("Zero", "onAttach : " + getActivity());
     }
 
     @Override
@@ -138,11 +156,12 @@ public class Bug1Fragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        fragmentObservable.onDetach();
         Log.i("Zero", "onDetach : " + getActivity());
     }
 
     public static Fragment newIntance() {
-        Bug1Fragment fragment = new Bug1Fragment();
+        Bug11Fragment fragment = new Bug11Fragment();
         return fragment;
     }
 

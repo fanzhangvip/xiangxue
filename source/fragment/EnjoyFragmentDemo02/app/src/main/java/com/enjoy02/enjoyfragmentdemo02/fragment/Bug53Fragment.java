@@ -34,8 +34,16 @@ public class Bug53Fragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        name = getArguments().getString("name");
+        Log.i("Zero","onAttach Bug53Fragment");
+        name = getArguments().getString("name");
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.i("Zero","onDetach Bug53Fragment");
+    }
+
 
     @Override
     public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {

@@ -1,15 +1,13 @@
 package com.enjoy02.enjoyfragmentdemo02.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.enjoy02.enjoyfragmentdemo02.BottomNavigationViewHelper;
@@ -18,13 +16,9 @@ import com.enjoy02.enjoyfragmentdemo02.fragment.Bug51Fragment;
 import com.enjoy02.enjoyfragmentdemo02.fragment.Bug52Fragment;
 import com.enjoy02.enjoyfragmentdemo02.fragment.Bug53Fragment;
 import com.enjoy02.enjoyfragmentdemo02.fragment.Bug54Fragment;
-import com.enjoy02.enjoyfragmentdemo02.fragment.Bug5Fragment;
 
 
-public class ViewpagerActivity extends FragmentActivity {
-
-    //TODO: 记录最后添加的是哪个Fragment
-    private int lastShowFragment = 0;
+public class ViewpagerActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
@@ -41,19 +35,52 @@ public class ViewpagerActivity extends FragmentActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         viewPager = findViewById(R.id.viewpager);
         initFragments();
-
+        viewPager.addOnPageChangeListener(onPageChangeListener);
+        viewPager.setAdapter(new MyViewPagerAdapter(getSupportFragmentManager(), fragments));
+        viewPager.setCurrentItem(0);
     }
 
     private void initFragments() {
 
         fragments = new Fragment[]{Bug51Fragment.newIntance("第一页"), Bug52Fragment.newIntance("第二页"), Bug53Fragment.newIntance("第三页"), Bug54Fragment.newIntance("第四页")};
-        lastShowFragment = 0;
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.frameLayout, fragments[lastShowFragment], fragments[lastShowFragment].getClass().getName())
-                .show(fragments[lastShowFragment])
-                .commit();
     }
+
+    static class MyViewPagerAdapter extends FragmentStatePagerAdapter {
+
+        Fragment[] fragments;
+
+        public MyViewPagerAdapter(FragmentManager fm, Fragment[] fragments) {
+            super(fm);
+            this.fragments = fragments;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments[position];
+        }
+
+        @Override
+        public int getCount() {
+            return fragments.length;
+        }
+    }
+
+    ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            bottomNavigationView.getMenu().getItem(position).setChecked(true);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 
     //TODO: 第三步 添加NavigationItemSelected监听
     BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -61,28 +88,16 @@ public class ViewpagerActivity extends FragmentActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.fragment_1:
-                    if (lastShowFragment != 0) {
-                        switchFragment(0);
-                        lastShowFragment = 0;
-                    }
+                    viewPager.setCurrentItem(0);
                     return true;
                 case R.id.fragment_2:
-                    if (lastShowFragment != 1) {
-                        switchFragment(1);
-                        lastShowFragment = 1;
-                    }
+                    viewPager.setCurrentItem(1);
                     return true;
                 case R.id.fragment_3:
-                    if (lastShowFragment != 2) {
-                        switchFragment(2);
-                        lastShowFragment = 2;
-                    }
+                    viewPager.setCurrentItem(2);
                     return true;
                 case R.id.fragment_4:
-                    if (lastShowFragment != 3) {
-                        switchFragment(3);
-                        lastShowFragment = 3;
-                    }
+                    viewPager.setCurrentItem(3);
                     return true;
             }
             return false;
@@ -90,23 +105,5 @@ public class ViewpagerActivity extends FragmentActivity {
 
     };
 
-    private void switchFragment(final int index) {
-        if (lastShowFragment != index) {
-            switchFragmentInner(lastShowFragment, index);
-            lastShowFragment = index;
-        }
-    }
-
-    void switchFragmentInner(final int lastIndex, final int index) {
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.hide(fragments[lastIndex]);
-
-        if (!fragments[index].isAdded()) {
-            transaction.add(R.id.frameLayout, fragments[index], fragments[index].getClass().getName());
-        }
-
-        transaction.show(fragments[index]).commitAllowingStateLoss();
-    }
 
 }
