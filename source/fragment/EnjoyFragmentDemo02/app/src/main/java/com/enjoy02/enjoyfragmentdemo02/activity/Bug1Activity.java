@@ -26,7 +26,7 @@ public class Bug1Activity extends FragmentActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.frameLayout, Bug111Fragment.newIntance(), Bug111Fragment.class.getName());
+        transaction.add(R.id.frameLayout, Bug1Fragment.newIntance(), Bug1Fragment.class.getName());
         transaction.commit();
     }
 

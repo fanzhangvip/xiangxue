@@ -28,13 +28,13 @@ public class Bug1Fragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Toast.makeText(mActivity,"任务执行了",Toast.LENGTH_LONG).show();
 
-
+            Toast.makeText(getActivity(),"任务执行了",Toast.LENGTH_LONG).show();
 
 //            if (getActivity() != null) {//getActivity不为null的时候我才执行下面的代码
 //                Toast.makeText(getActivity(), "任务执行了", Toast.LENGTH_LONG).show();
 //            }
+//            Toast.makeText(mActivity,"任务执行了",Toast.LENGTH_LONG).show();
         }
     };
 
@@ -42,7 +42,7 @@ public class Bug1Fragment extends BaseFragment {
         @Override
         public void run() {
             try {
-                Thread.sleep(2500);
+                Thread.sleep(4500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

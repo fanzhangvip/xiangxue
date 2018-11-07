@@ -7,9 +7,14 @@ public class Mouse implements Observer {
 
     private String name;
 
+    public Mouse(String name){
+        this.name = name;
+        System.out.println("我是"+ name+",我现在在偷粮食。。。");
+    }
+
     @Override
     public void update(Observable observable) {
-
+        runAway();
     }
 
     /**

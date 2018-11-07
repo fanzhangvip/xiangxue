@@ -35,7 +35,6 @@ public class Bug111Fragment extends BaseFragment {
     };
 
 
-    FragmentObservable fragmentObservable = new FragmentObservable();
 
     class NetWorkTask implements Runnable, LifecycleObserver {
 
@@ -86,7 +85,6 @@ public class Bug111Fragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        fragmentObservable.onAttach(context);
         Log.i("Zero", "onAttach : " + getActivity());
     }
 
@@ -170,7 +168,6 @@ public class Bug111Fragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        fragmentObservable.onDetach();
         Log.i("Zero", "onDetach : " + getActivity());
     }
 
