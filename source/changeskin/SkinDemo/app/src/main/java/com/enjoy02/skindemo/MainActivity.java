@@ -2,6 +2,8 @@ package com.enjoy02.skindemo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ViewStub;
+import android.widget.LinearLayout;
 
 /**
 * [享学课堂]
