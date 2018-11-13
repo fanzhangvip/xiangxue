@@ -23,7 +23,7 @@ public class MainTest {
         cat.addObserver(mouse7);
         cat.addObserver(owner);
 
-//        cat.Meow();
+        cat.Meow();
 
     }
 }

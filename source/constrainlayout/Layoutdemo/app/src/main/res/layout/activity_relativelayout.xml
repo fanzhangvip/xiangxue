@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#556622" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="#cc7799" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#cc9922" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="#cc9922" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:background="#339522" />
+
+
+    <ImageView
+        android:id="@+id/center"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="#75952f" />
+
+    <ImageView
+        android:id="@+id/center_left"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toLeftOf="@+id/center"
+        android:layout_alignTop="@+id/center"
+        android:background="#441188" />
+
+    <ImageView
+        android:id="@+id/center_right"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toRightOf="@+id/center"
+        android:layout_alignTop="@+id/center"
+        android:background="#ff1188" />
+
+    <ImageView
+        android:id="@+id/center_above"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/center"
+        android:layout_alignLeft="@+id/center"
+        android:background="#ff1144" />
+
+    <ImageView
+        android:id="@+id/center_below"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/center"
+        android:layout_alignLeft="@+id/center"
+        android:background="#678944" />
+
+
+</RelativeLayout>

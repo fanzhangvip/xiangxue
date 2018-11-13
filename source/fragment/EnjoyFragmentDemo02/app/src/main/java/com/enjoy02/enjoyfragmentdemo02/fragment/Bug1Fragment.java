@@ -42,7 +42,7 @@ public class Bug1Fragment extends BaseFragment {
         @Override
         public void run() {
             try {
-                Thread.sleep(4500);
+                Thread.sleep(8500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
