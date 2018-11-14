@@ -12,13 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 */
 public class SkinActivity extends AppCompatActivity {
 
+    protected SkinFactory mSkinFactory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         // TODO: hook
-        SkinFactory skinFactory = new SkinFactory();
-        skinFactory.setDelegate(getDelegate());
-        LayoutInflaterCompat.setFactory2(getLayoutInflater(), skinFactory);
+        mSkinFactory = new SkinFactory();
+        mSkinFactory.setDelegate(getDelegate());
+        LayoutInflaterCompat.setFactory2(getLayoutInflater(), mSkinFactory);
         super.onCreate(savedInstanceState);
 
     }
