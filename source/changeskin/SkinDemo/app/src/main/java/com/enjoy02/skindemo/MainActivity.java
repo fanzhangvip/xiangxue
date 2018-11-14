@@ -12,11 +12,11 @@ import java.io.File;
 
 
 /**
- * [享学课堂]
- * 学无止境，让学习成为一种享受
- * TODO:主讲Zero老师QQ 2124346685
- * TODO:咨询伊娜老师QQ 2133576719
- */
+* [享学课堂]
+* 学无止境，让学习成为一种享受
+* TODO: 主讲Zero老师QQ 2124346685
+* TODO: 咨询伊娜老师QQ 2133576719
+*/
 public class MainActivity extends SkinActivity {
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;

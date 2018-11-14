@@ -14,8 +14,8 @@ import java.lang.reflect.Method;
 /**
  * [享学课堂]
  * 学无止境，让学习成为一种享受
- * 主讲Zero老师QQ:2124346685
- * 咨询伊娜老师QQ:2133576719
+ * TODO: 主讲Zero老师QQ 2124346685
+ * TODO: 咨询伊娜老师QQ 2133576719
  */
 public class SkinEngine {
 
@@ -32,10 +32,13 @@ public class SkinEngine {
         mContext = context.getApplicationContext();
     }
 
-    private Resources mOutResource;
+    private Resources mOutResource;// TODO: 外部资源
     private Context mContext;
-    private String mOutPkgName;
+    private String mOutPkgName;// TODO: 外部资源包的packageName
 
+    /**
+     * TODO: 加载外部资源包
+     */
     public void load(final String path) {
         File file = new File(path);
         if (!file.exists()) {
@@ -47,6 +50,7 @@ public class SkinEngine {
         AssetManager assetManager = null;
         try {
             assetManager = AssetManager.class.newInstance();
+            // TODO: 加载资源的核心原理
             Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
             addAssetPath.invoke(assetManager, path);
 
@@ -60,24 +64,24 @@ public class SkinEngine {
 
     public int getColor(int resId) {
         if (mOutResource == null) {
-            return  resId;
+            return resId;
         }
         String resName = mOutResource.getResourceEntryName(resId);
         int outResId = mOutResource.getIdentifier(resName, "color", mOutPkgName);
         if (outResId == 0) {
-            return  resId;
+            return resId;
         }
         return mOutResource.getColor(outResId);
     }
 
     public Drawable getDrawable(int resId) {
         if (mOutResource == null) {
-            return ContextCompat.getDrawable(mContext,resId);
+            return ContextCompat.getDrawable(mContext, resId);
         }
         String resName = mOutResource.getResourceEntryName(resId);
         int outResId = mOutResource.getIdentifier(resName, "drawable", mOutPkgName);
         if (outResId == 0) {
-            return  ContextCompat.getDrawable(mContext,resId);
+            return ContextCompat.getDrawable(mContext, resId);
         }
         return mOutResource.getDrawable(outResId);
     }

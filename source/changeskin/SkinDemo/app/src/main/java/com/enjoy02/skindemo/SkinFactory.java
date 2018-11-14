@@ -17,8 +17,8 @@ import java.util.List;
 /**
  * [享学课堂]
  * 学无止境，让学习成为一种享受
- * TODO:主讲Zero老师QQ 2124346685
- * TODO:咨询伊娜老师QQ 2133576719
+ * TODO: 主讲Zero老师QQ 2124346685
+ * TODO: 咨询伊娜老师QQ 2133576719
  */
 public class SkinFactory implements LayoutInflater.Factory2 {
 
@@ -107,6 +107,9 @@ public class SkinFactory implements LayoutInflater.Factory2 {
     }
 
 
+    /**
+    * TODO: 收集需要换肤的控件
+    */
     private void collectSkinView(Context context, AttributeSet attrs, View view) {
 
         final int Len = attrs.getAttributeCount();
@@ -130,13 +133,13 @@ public class SkinFactory implements LayoutInflater.Factory2 {
             skinView.view = view;
             skinView.skinItemList = skinItemList;
             cacheSkinView.add(skinView);
-            skinView.change();
+            skinView.changeSkin();
         }
     }
 
     public void changeSkin() {
         for (SkinView skinView : cacheSkinView) {
-            skinView.change();
+            skinView.changeSkin();
         }
     }
 
@@ -147,7 +150,7 @@ public class SkinFactory implements LayoutInflater.Factory2 {
         /**
          * TODO: 换肤
          */
-        public void change() {
+        public void changeSkin() {
             for (SkinItem skinItem : skinItemList) {
                 if (TextUtils.equals(skinItem.attrName, "textColor")) {
                     if (view instanceof TextView) {
