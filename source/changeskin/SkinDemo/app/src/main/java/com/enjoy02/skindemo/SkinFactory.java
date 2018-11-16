@@ -55,7 +55,7 @@ public class SkinFactory implements LayoutInflater.Factory2 {
                 view = createView(context, name, null, attrs);
             }
         }
-        Log.i("Zero", "name: " + name + " view: " + view);
+//        Log.i("Zero", "name: " + name + " view: " + view);
         if (view != null) {
             collectSkinView(context, attrs, view);
         }
@@ -82,12 +82,12 @@ public class SkinFactory implements LayoutInflater.Factory2 {
                     }
                 }
 
-                Log.i("Zero", "clazz: " + clazz);
+//                Log.i("Zero", "clazz: " + clazz);
                 if (clazz == null) {
                     return null;
                 }
                 constructor = clazz.getConstructor(mConstructorSignature);
-                Log.i("Zero", "constructor: " + constructor);
+//                Log.i("Zero", "constructor: " + constructor);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -108,8 +108,8 @@ public class SkinFactory implements LayoutInflater.Factory2 {
 
 
     /**
-    * TODO: 收集需要换肤的控件
-    */
+     * TODO: 收集需要换肤的控件
+     */
     private void collectSkinView(Context context, AttributeSet attrs, View view) {
 
         final int Len = attrs.getAttributeCount();
@@ -118,13 +118,16 @@ public class SkinFactory implements LayoutInflater.Factory2 {
             String attrName = attrs.getAttributeName(i);
             String attrValue = attrs.getAttributeValue(i);
 //            Log.i("Zero","attrName: " + attrName + " attrValue: " + attrValue);
+//            if (attrValue.startsWith("@")) {
+//                Log.i("Zero", "attrName: " + attrName + " attrValue: " + attrValue + " attrs: " + attrs);
+//            }
             if (TextUtils.equals(attrName, "textColor") || TextUtils.equals(attrName, "background")) {
                 SkinItem skinItem = new SkinItem();
                 skinItem.attrName = attrName;
                 skinItem.id = Integer.parseInt(attrValue.substring(1));
                 skinItem.attrValue = context.getResources().getResourceEntryName(skinItem.id);
                 skinItem.attrType = context.getResources().getResourceTypeName(skinItem.id);
-                Log.i("Zero", "skinItem: " + skinItem);
+//                Log.i("Zero", "skinItem: " + skinItem);
                 skinItemList.add(skinItem);
             }
         }

@@ -6,10 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-/**
- * http://blog.csdn.net/cc_want/article/details/49179109
- * @author CSDN id:cc_want
- */
+
 public class AbcActivity extends Activity{
 	
 	private Button mBtnBack;

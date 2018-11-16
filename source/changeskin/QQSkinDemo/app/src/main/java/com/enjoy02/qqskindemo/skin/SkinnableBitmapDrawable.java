@@ -16,13 +16,8 @@ import android.util.Log;
 import android.view.Gravity;
 import java.io.InputStream;
 
-/**
- * http://blog.csdn.net/cc_want/article/details/49179109
- * @author CSDN id:cc_want
- */
+
 public class SkinnableBitmapDrawable extends Drawable {
-	private static final int[] BitmapDrawable = { 16843033, 16843034, 16843035,
-			16843036, 16842927, 16843265 };
 	private static final int DEFAULT_PAINT_FLAGS = 6;
 	private boolean mApplyGravity;
 	private Bitmap mBitmap;
