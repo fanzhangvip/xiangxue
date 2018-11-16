@@ -1,6 +1,7 @@
 package com.enjoy02.skindemo;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -55,7 +56,6 @@ public class SkinFactory implements LayoutInflater.Factory2 {
                 view = createView(context, name, null, attrs);
             }
         }
-//        Log.i("Zero", "name: " + name + " view: " + view);
         if (view != null) {
             collectSkinView(context, attrs, view);
         }
@@ -81,7 +81,6 @@ public class SkinFactory implements LayoutInflater.Factory2 {
                         clazz = context.getClassLoader().loadClass(name).asSubclass(View.class);
                     }
                 }
-
 //                Log.i("Zero", "clazz: " + clazz);
                 if (clazz == null) {
                     return null;
@@ -111,33 +110,22 @@ public class SkinFactory implements LayoutInflater.Factory2 {
      * TODO: 收集需要换肤的控件
      */
     private void collectSkinView(Context context, AttributeSet attrs, View view) {
-
-        final int Len = attrs.getAttributeCount();
-        List<SkinItem> skinItemList = new ArrayList<>();
-        for (int i = 0; i < Len; i++) {
-            String attrName = attrs.getAttributeName(i);
-            String attrValue = attrs.getAttributeValue(i);
-//            Log.i("Zero","attrName: " + attrName + " attrValue: " + attrValue);
-//            if (attrValue.startsWith("@")) {
-//                Log.i("Zero", "attrName: " + attrName + " attrValue: " + attrValue + " attrs: " + attrs);
-//            }
-            if (TextUtils.equals(attrName, "textColor") || TextUtils.equals(attrName, "background")) {
-                SkinItem skinItem = new SkinItem();
-                skinItem.attrName = attrName;
-                skinItem.id = Integer.parseInt(attrValue.substring(1));
-                skinItem.attrValue = context.getResources().getResourceEntryName(skinItem.id);
-                skinItem.attrType = context.getResources().getResourceTypeName(skinItem.id);
-//                Log.i("Zero", "skinItem: " + skinItem);
-                skinItemList.add(skinItem);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Skinable);
+        boolean isSupport = a.getBoolean(R.styleable.Skinable_isSupport, false);
+        if (isSupport) {
+            final int Len = attrs.getAttributeCount();
+            HashMap<String, String> attrmap = new HashMap<>();
+            for (int i = 0; i < Len; i++) {
+                String attrName = attrs.getAttributeName(i);
+                String attrValue = attrs.getAttributeValue(i);
+                attrmap.put(attrName, attrValue);
             }
-        }
-        if (!skinItemList.isEmpty()) {
             SkinView skinView = new SkinView();
             skinView.view = view;
-            skinView.skinItemList = skinItemList;
+            skinView.attrsMap = attrmap;
             cacheSkinView.add(skinView);
-            skinView.changeSkin();
         }
+
     }
 
     public void changeSkin() {
@@ -146,44 +134,56 @@ public class SkinFactory implements LayoutInflater.Factory2 {
         }
     }
 
+    public static final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
+    public static final String APP_NAMESPACE = "http://schemas.android.com/apk/res-auto";
+
+    public static String getValue(AttributeSet attributeSet, String attribute) {
+        if (attributeSet == null) {
+            return null;
+        }
+        String string = attributeSet.getAttributeValue(APP_NAMESPACE, attribute);
+        return string;
+    }
+
+    /**
+     * 获取 string值,
+     *
+     * @param attribute 属性名称
+     * @return 如果找到返回相应的值, 否则返回null
+     */
+    public String getString(Context context, AttributeSet attributeSet, String attribute) {
+        String string = getValue(attributeSet, attribute);
+
+        if (string != null && string.startsWith("@")) {// 资源文件
+            string = context.getResources().getString(
+                    Integer.parseInt(string.substring(1)));
+        }
+        return string;
+    }
+
     static class SkinView {
         View view;
-        List<SkinItem> skinItemList;
-
+        HashMap<String, String> attrsMap;
         /**
          * TODO: 换肤
          */
         public void changeSkin() {
-            for (SkinItem skinItem : skinItemList) {
-                if (TextUtils.equals(skinItem.attrName, "textColor")) {
-                    if (view instanceof TextView) {
-                        ((TextView) view).setTextColor(SkinEngine.getInstance().getColor(skinItem.id));
-                    }
-                } else if (TextUtils.equals(skinItem.attrName, "background")) {
-                    if (TextUtils.equals(skinItem.attrType, "drawable")) {
-                        view.setBackgroundDrawable(SkinEngine.getInstance().getDrawable(skinItem.id));
-                    } else if (TextUtils.equals(skinItem.attrType, "color")) {
-                        view.setBackgroundColor(SkinEngine.getInstance().getColor(skinItem.id));
-                    }
+            if (!TextUtils.isEmpty(attrsMap.get("background"))) {
+                int bgId = Integer.parseInt(attrsMap.get("background").substring(1));
+                String attrType = view.getResources().getResourceTypeName(bgId);
+                if (TextUtils.equals(attrType, "drawable")) {
+                    view.setBackgroundDrawable(SkinEngine.getInstance().getDrawable(bgId));
+                } else if (TextUtils.equals(attrType, "color")) {
+                    view.setBackgroundColor(SkinEngine.getInstance().getColor(bgId));
                 }
             }
-        }
-    }
 
-    static class SkinItem {
-        String attrName;
-        int id;
-        String attrValue;
-        String attrType;
-
-        @Override
-        public String toString() {
-            return "SkinItem{" +
-                    "attrName='" + attrName + '\'' +
-                    ", id=" + id +
-                    ", attrValue='" + attrValue + '\'' +
-                    ", attrType='" + attrType + '\'' +
-                    '}';
+            if (view instanceof TextView) {
+                if (!TextUtils.isEmpty(attrsMap.get("textColor"))) {
+                    int textColorId = Integer.parseInt(attrsMap.get("textColor").substring(1));
+                    ((TextView) view).setTextColor(SkinEngine.getInstance().getColor(textColorId));
+                }
+            }
         }
     }
 
