@@ -13,6 +13,6 @@ public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        SkinEngine.getInstance().init(this);
+        SkinEngine.getInstance().init(this);
     }
 }

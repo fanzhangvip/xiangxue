@@ -46,21 +46,31 @@ public class SkinFactory implements LayoutInflater.Factory2 {
 
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+
         View view = mDelegate.createView(parent, name, context, attrs);
         if (view == null) {
             mConstructorArgs[0] = context;
-
-            if (-1 == name.indexOf('.')) {// TODO: 系统的view
-                view = createView(context, name, prefixs, attrs);
-            } else {// TODO: 自定义的view
-                view = createView(context, name, null, attrs);
+            try {//替代系统来创建view
+                if (-1 == name.indexOf('.')) {//TextView
+                    // 如果View的name中不包含 '.' 则说明是系统控件，会在接下来的调用链在name前面加上 'android.view.'
+                    view = createView(context, name, prefixs, attrs);
+                } else {
+                    // 如果name中包含 '.' 则直接调用createView方法，onCreateView 后续也是调用了createView
+                    view = createView(context, name, null, attrs);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         }
-        if (view != null) {
-            collectSkinView(context, attrs, view);
-        }
+
+        //收集需要换肤的View
+        collectSkinView(context,attrs,view);
+
         return view;
+
     }
+
 
 
     public final View createView(Context context, String name, String[] prefixs, AttributeSet attrs) {
@@ -81,12 +91,10 @@ public class SkinFactory implements LayoutInflater.Factory2 {
                         clazz = context.getClassLoader().loadClass(name).asSubclass(View.class);
                     }
                 }
-//                Log.i("Zero", "clazz: " + clazz);
                 if (clazz == null) {
                     return null;
                 }
                 constructor = clazz.getConstructor(mConstructorSignature);
-//                Log.i("Zero", "constructor: " + constructor);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -110,16 +118,20 @@ public class SkinFactory implements LayoutInflater.Factory2 {
      * TODO: 收集需要换肤的控件
      */
     private void collectSkinView(Context context, AttributeSet attrs, View view) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Skinable);
-        boolean isSupport = a.getBoolean(R.styleable.Skinable_isSupport, false);
-        if (isSupport) {
+
+        //获取我们自己定义的属性
+        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.Skinable);
+        boolean isSupport = a.getBoolean(R.styleable.Skinable_isSupport,false);
+        if(isSupport){
             final int Len = attrs.getAttributeCount();
-            HashMap<String, String> attrmap = new HashMap<>();
-            for (int i = 0; i < Len; i++) {
+            HashMap<String,String> attrmap = new HashMap<>();
+            for(int i = 0; i < Len;i++){
                 String attrName = attrs.getAttributeName(i);
                 String attrValue = attrs.getAttributeValue(i);
-                attrmap.put(attrName, attrValue);
+                Log.i("Zero","attrName: " + attrName + " attrValue: " + attrValue);
+                attrmap.put(attrName,attrValue);
             }
+
             SkinView skinView = new SkinView();
             skinView.view = view;
             skinView.attrsMap = attrmap;
@@ -134,58 +146,33 @@ public class SkinFactory implements LayoutInflater.Factory2 {
         }
     }
 
-    public static final String ANDROID_NAMESPACE = "http://schemas.android.com/apk/res/android";
-    public static final String APP_NAMESPACE = "http://schemas.android.com/apk/res-auto";
-
-    public static String getValue(AttributeSet attributeSet, String attribute) {
-        if (attributeSet == null) {
-            return null;
-        }
-        String string = attributeSet.getAttributeValue(APP_NAMESPACE, attribute);
-        return string;
-    }
+static class SkinView {
+    View view;
+    HashMap<String, String> attrsMap;
 
     /**
-     * 获取 string值,
-     *
-     * @param attribute 属性名称
-     * @return 如果找到返回相应的值, 否则返回null
+     * TODO: 换肤
      */
-    public String getString(Context context, AttributeSet attributeSet, String attribute) {
-        String string = getValue(attributeSet, attribute);
-
-        if (string != null && string.startsWith("@")) {// 资源文件
-            string = context.getResources().getString(
-                    Integer.parseInt(string.substring(1)));
-        }
-        return string;
-    }
-
-    static class SkinView {
-        View view;
-        HashMap<String, String> attrsMap;
-        /**
-         * TODO: 换肤
-         */
-        public void changeSkin() {
-            if (!TextUtils.isEmpty(attrsMap.get("background"))) {
-                int bgId = Integer.parseInt(attrsMap.get("background").substring(1));
-                String attrType = view.getResources().getResourceTypeName(bgId);
-                if (TextUtils.equals(attrType, "drawable")) {
-                    view.setBackgroundDrawable(SkinEngine.getInstance().getDrawable(bgId));
-                } else if (TextUtils.equals(attrType, "color")) {
-                    view.setBackgroundColor(SkinEngine.getInstance().getColor(bgId));
-                }
+    public void changeSkin() {
+        if (!TextUtils.isEmpty(attrsMap.get("background"))) {
+            int bgId = Integer.parseInt(attrsMap.get("background").substring(1));
+            String attrType = view.getResources().getResourceTypeName(bgId);
+            if (TextUtils.equals(attrType, "drawable")) {
+                view.setBackgroundDrawable(SkinEngine.getInstance().getDrawable(bgId));
+            } else if (TextUtils.equals(attrType, "color")) {
+                view.setBackgroundColor(SkinEngine.getInstance().getColor(bgId));
             }
+        }
 
-            if (view instanceof TextView) {
-                if (!TextUtils.isEmpty(attrsMap.get("textColor"))) {
-                    int textColorId = Integer.parseInt(attrsMap.get("textColor").substring(1));
-                    ((TextView) view).setTextColor(SkinEngine.getInstance().getColor(textColorId));
-                }
+        if (view instanceof TextView) {
+            if (!TextUtils.isEmpty(attrsMap.get("textColor"))) {
+                int textColorId = Integer.parseInt(attrsMap.get("textColor").substring(1));
+                ((TextView) view).setTextColor(SkinEngine.getInstance().getColor(textColorId));
             }
         }
     }
+
+}
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {

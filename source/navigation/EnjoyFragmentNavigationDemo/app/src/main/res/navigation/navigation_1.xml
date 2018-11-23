@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation_1">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_1"
+    app:startDestination="@id/oneFragment">
 
+    <fragment
+        android:id="@+id/oneFragment"
+        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment"
+        android:label="fragment_1"
+        tools:layout="@layout/fragment_1" >
+        <action
+            android:id="@+id/action_oneFragment_to_twoFragment3"
+            app:destination="@id/twoFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/twoFragment3"
+        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.TwoFragment"
+        android:label="fragment_2"
+        tools:layout="@layout/fragment_2" >
+        <action
+            android:id="@+id/action_twoFragment3_to_oneFragment33"
+            app:destination="@id/oneFragment33" />
+    </fragment>
+    <fragment
+        android:id="@+id/oneFragment33"
+        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment3"
+        android:label="fragment_13"
+        tools:layout="@layout/fragment_13" >
+        <action
+            android:id="@+id/action_oneFragment33_to_oneFragment"
+            app:destination="@id/oneFragment"
+            app:popUpTo="@+id/oneFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity2"
+        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <include app:graph="@navigation/nav_graph" />
 </navigation>

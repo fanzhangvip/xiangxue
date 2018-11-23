@@ -38,7 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <com.enjoy02.skindemo.ZeroView
+    <com.enjoy02.changeskindemo.ZeroView
         android:id="@+id/zeroView"
         android:layout_width="0dp"
         android:layout_height="0dp"

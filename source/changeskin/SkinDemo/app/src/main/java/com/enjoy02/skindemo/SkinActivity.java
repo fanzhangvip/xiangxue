@@ -18,9 +18,7 @@ public class SkinActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         // TODO: hook
-        mSkinFactory = new SkinFactory();
-        mSkinFactory.setDelegate(getDelegate());
-        LayoutInflaterCompat.setFactory2(getLayoutInflater(), mSkinFactory);
+
         super.onCreate(savedInstanceState);
 
     }

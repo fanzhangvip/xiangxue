@@ -1,12 +1,18 @@
 package com.enjoy02.skindemo;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
+import android.widget.Button;
 
 import java.io.File;
 
@@ -17,12 +23,14 @@ import java.io.File;
 * TODO: 主讲Zero老师QQ 2124346685
 * TODO: 咨询伊娜老师QQ 2133576719
 */
-public class MainActivity extends SkinActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.WRITE_EXTERNAL_STORAGE"};
+
+    private  SkinFactory mSkinFactory;
 
 
     public static void verifyStoragePermissions(AppCompatActivity activity) {
@@ -43,10 +51,35 @@ public class MainActivity extends SkinActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+//        LayoutInflater.from(this).setFactory2(new LayoutInflater.Factory2() {
+//            @Override
+//            public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+//
+//                Log.i("Zero","name: " + name);
+//
+//                if(TextUtils.equals(name,"TextView")){
+//                    Button button = new Button(MainActivity.this);
+//                    button.setText("我是被替换的TextView");
+//                    return  button;
+//                }
+//
+//                return null;
+//            }
+//
+//            @Override
+//            public View onCreateView(String name, Context context, AttributeSet attrs) {
+//                return null;
+//            }
+//        });
+
+        mSkinFactory = new SkinFactory();
+        mSkinFactory.setDelegate(getDelegate());
+        LayoutInflater.from(this).setFactory2(mSkinFactory);
         super.onCreate(savedInstanceState);
+        //setFactory进去
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
-        ViewStub viewStub;
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

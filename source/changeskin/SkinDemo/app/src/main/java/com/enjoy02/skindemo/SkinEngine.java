@@ -51,12 +51,15 @@ public class SkinEngine {
         mOutPkgName = mInfo.packageName;
         AssetManager assetManager = null;
         try {
-            assetManager = AssetManager.class.newInstance();
-            // TODO: 加载资源的核心原理
-            Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
-            addAssetPath.invoke(assetManager, path);
 
-            mOutResource = new Resources(assetManager, mContext.getResources().getDisplayMetrics(), mContext.getResources().getConfiguration());
+            //通过反射获取AssetManager 用来加载外面的资源包
+            assetManager  = AssetManager.class.newInstance();
+            //addAssetPath方法可以加载外部的资源包
+            Method addAssetPath = assetManager.getClass().getMethod("addAssetPath",String.class);
+            addAssetPath.invoke(assetManager,path);
+
+            mOutResource = new Resources(assetManager,mContext.getResources().getDisplayMetrics(),
+                    mContext.getResources().getConfiguration());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,7 +79,7 @@ public class SkinEngine {
         return mOutResource.getColor(outResId);
     }
 
-    public Drawable getDrawable(int resId) {
+    public Drawable getDrawable(int resId) {//获取图片
         if (mOutResource == null) {
             return ContextCompat.getDrawable(mContext, resId);
         }
