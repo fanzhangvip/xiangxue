@@ -1,7 +1,8 @@
 apply plugin: 'java-library'
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/cglib-3.2.9.jar')
 }
 
 tasks.withType(JavaCompile){

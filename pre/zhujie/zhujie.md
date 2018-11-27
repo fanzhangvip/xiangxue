@@ -52,6 +52,26 @@
 * 增加数组类型的属性：int[] arrayAttr() default {1,2,4};
 * 应用数组类型的属性：@MyAnnotation(arrayAttr={2,4,5})
 * 如果数组属性只有一个值，这时候属性值部分可以省略大括号，如：@MyAnnotation(arrayAttr=2)，这就表示数组属性只有一个值，值为2
+#### 注解的处理
+* Java在java.lang.reflect 包下新增了AnnotatedElement接口，该接口主要有如下几个实现类：
+```
+    //如果存在这样的注解，则返回该元素的指定类型的注解，否则为空。
+    <T extends Annotation> T getAnnotation(Class<T> annotationClass)
+    //返回该程序元素上存在的所有注解。
+    Annotation[] getAnnotations()
+    //判断该程序元素上是否包含指定类型的注解，存在则返回true，否则返回false.
+    boolean is AnnotationPresent(Class<?extends Annotation> annotationClass)
+    //返回直接存在于此元素上的所有注释。与此接口中的其他方法不同，该方法将忽略继承的注释。（如果没有注释直接存在于此元素上，则返回长度为零的一个数组。）该方法的调用者可以随意修改返回的数组；这不会对其他调用者返回的数组产生任何影响。
+    Annotation[] getDeclaredAnnotations()
+```
+---
+#### 代理模式
+* jdk为我们的生成了一个叫$Proxy0（这个名字后面的0是编号，有多个代理类会一次递增）的代理类，这个类文件时放在内存中的，我们在创建代理对象时，就是通过反射获得这个类的构造方法，然后创建的代理实例。通过对这个生成的代理类源码的查看，我们很容易能看出，动态代理实现的具体过程。
+我们可以对InvocationHandler看做一个中介类，中介类持有一个被代理对象，在invoke方法中调用了被代理对象的相应方法。通过聚合方式持有被代理对象的引用，把外部对invoke的调用最终都转为对被代理对象的调用。
+代理类调用自己方法时，通过自身持有的中介类对象来调用中介类对象的invoke方法，从而达到代理执行被代理对象的方法。也就是说，动态代理通过中介类实现了具体的代理功能。
+
+* 生成的代理类：$Proxy0 extends Proxy implements ILawsuit，我们看到代理类继承了ILawsuit类，所以也就决定了java动态代理只能对接口进行代理，Java的继承机制注定了这些动态代理类们无法实现对class的动态代理。
+上面的动态代理的例子，其实就是AOP的一个简单实现了，在目标对象的方法执行之前和执行之后进行了处理，对方法耗时统计。Spring的AOP实现其实也是用了Proxy和InvocationHandler这两个东西的。
 
 
 
