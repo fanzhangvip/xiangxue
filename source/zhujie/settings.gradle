@@ -1,1 +1,1 @@
-include ':app', ':libZhujie01', ':libProxy'
+include ':app', ':libZhujie01', ':libProxy', ':libdemo'

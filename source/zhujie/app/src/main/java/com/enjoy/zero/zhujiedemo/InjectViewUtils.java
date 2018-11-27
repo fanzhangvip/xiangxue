@@ -59,10 +59,10 @@ public class InjectViewUtils {
                 //get Event
                 Event event = onclick.annotationType().getAnnotation(Event.class);
                 Class listener = event.listener();
-                String listenerSetter = event.setOnClickListener();
+                String  listenerName= event.setOnClickListener();
                 String methodName = event.methodName();
 
-                //创建InvocationHandler和动态代理(代理要实现listenerType，这个例子就是处理onClick点击事件)
+                //创建InvocationHandler和动态代理(在这里就是处理onClick点击事件)
                 ProxyHandler proxyHandler = new ProxyHandler(activity);
                 proxyHandler.setMethod(methodName,method);
                 try {
@@ -72,8 +72,8 @@ public class InjectViewUtils {
                         Method findViewById = activityClass.getMethod("findViewById", int.class);
                         findViewById.setAccessible(true);
                         View btn = (View) findViewById.invoke(activity, id);
-                        //根据listenerSetter方法名和listenerType方法参数找到method
-                        Method setOnClickListener = btn.getClass().getMethod(listenerSetter, listener);
+                        //根据listener方法名和event方法参数找到method
+                        Method setOnClickListener = btn.getClass().getMethod(listenerName, listener);
                         setOnClickListener.setAccessible(true);
                         setOnClickListener.invoke(btn, proxyInstance);
                     }
