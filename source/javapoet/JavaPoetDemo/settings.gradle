@@ -1,1 +1,1 @@
-include ':app', ':annotations', ':processors', ':api', ':Visitor'
+include ':app', ':annotations', ':processors', ':api', ':Visitor', ':JavaPoet'

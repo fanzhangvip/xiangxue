@@ -1,13 +1,14 @@
 package com.enjoy.zero.processors;
 
 import com.enjoy.zero.annotations.BindView;
+import com.enjoy.zero.javapoet.ClassName;
+import com.enjoy.zero.javapoet.JavaFile;
+import com.enjoy.zero.javapoet.MethodSpec;
+import com.enjoy.zero.javapoet.ParameterizedTypeName;
+import com.enjoy.zero.javapoet.TypeName;
+import com.enjoy.zero.javapoet.TypeSpec;
 import com.google.auto.service.AutoService;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
-import com.squareup.javapoet.TypeName;
-import com.squareup.javapoet.TypeSpec;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
