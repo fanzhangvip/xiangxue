@@ -52,7 +52,7 @@ public class SkinEngine {
         AssetManager assetManager = null;
         try {
 
-            //通过反射获取AssetManager 用来加载外面的资源包
+            //TODO: 关键技术点3 通过反射获取AssetManager 用来加载外面的资源包
             assetManager  = AssetManager.class.newInstance();
             //addAssetPath方法可以加载外部的资源包
             Method addAssetPath = assetManager.getClass().getMethod("addAssetPath",String.class);

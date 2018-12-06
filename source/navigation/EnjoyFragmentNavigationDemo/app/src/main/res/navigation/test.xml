@@ -3,64 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/test"
-    app:startDestination="@id/oneFragment12">
+    app:startDestination="@id/oneFragment5">
 
+    <fragment
+        android:id="@+id/oneFragment5"
+        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment"
+        android:label="fragment_1"
+        tools:layout="@layout/fragment_1" >
+        <action
+            android:id="@+id/action_oneFragment5_to_twoFragment"
+            app:destination="@id/twoFragment" />
+
+    </fragment>
     <fragment
         android:id="@+id/twoFragment"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.TwoFragment"
         android:label="fragment_2"
-        tools:layout="@layout/fragment_2" />
+        tools:layout="@layout/fragment_2" >
+        <action
+            android:id="@+id/action_twoFragment_to_threeFragment"
+            app:destination="@id/threeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/threeFragment"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.ThreeFragment"
         android:label="fragment_3"
-        tools:layout="@layout/fragment_3" />
+        tools:layout="@layout/fragment_3" >
+        <action
+            android:id="@+id/action_threeFragment_to_fourFragment"
+            app:destination="@id/fourFragment" />
+    </fragment>
     <fragment
         android:id="@+id/fourFragment"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.FourFragment"
         android:label="fragment_4"
-        tools:layout="@layout/fragment_4" />
-    <fragment
-        android:id="@+id/oneFragment12"
-        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment1"
-        android:label="fragment_11"
-        tools:layout="@layout/fragment_11" >
+        tools:layout="@layout/fragment_4" >
         <action
-            android:id="@+id/action_oneFragment12_to_oneFragment22"
-            app:destination="@id/oneFragment22" />
-    </fragment>
-    <fragment
-        android:id="@+id/oneFragment22"
-        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment2"
-        android:label="fragment_12"
-        tools:layout="@layout/fragment_12" >
-        <action
-            android:id="@+id/action_oneFragment22_to_oneFragment32"
-            app:destination="@id/oneFragment32" />
-    </fragment>
-    <fragment
-        android:id="@+id/oneFragment42"
-        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment4"
-        android:label="fragment_14"
-        tools:layout="@layout/fragment_14" >
-        <action
-            android:id="@+id/action_oneFragment42_to_oneFragment12"
-            app:destination="@id/oneFragment12"
-            app:popUpTo="@+id/oneFragment12" />
-    </fragment>
-    <fragment
-        android:id="@+id/oneFragment32"
-        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment3"
-        android:label="fragment_13"
-        tools:layout="@layout/fragment_13" >
-        <action
-            android:id="@+id/action_oneFragment32_to_oneFragment42"
-            app:destination="@id/oneFragment42" />
+            android:id="@+id/action_fourFragment_to_oneFragment5"
+            app:destination="@id/oneFragment5"
+            app:popUpTo="@+id/oneFragment5" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
-    <include app:graph="@navigation/nav_graph" />
+    <include app:graph="@navigation/navigation_1" />
 </navigation>

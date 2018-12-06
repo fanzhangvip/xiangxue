@@ -53,7 +53,7 @@ public class Main {
          */
         ILawsuit lawyer = (ILawsuit) Proxy.newProxyInstance(ILawsuit.class.getClassLoader(), new Class[]{ILawsuit.class}, proxy);
 
-        generyProxyFile();
+//        generyProxyFile();
 
         //律师提交诉讼材料
         lawyer.submit();
@@ -82,20 +82,5 @@ public class Main {
         lawyer.finish();
     }
 
-    /**
-     * 生成代理类文件
-     */
-    public static void generyProxyFile() {
-        byte[] classFile = ProxyGenerator.generateProxyClass("Proxy0", NiuGeng.class.getInterfaces());
-        String path = "./ILawsuitProxy0.class";
-        try {
-            FileOutputStream fos = new FileOutputStream(path);
-            fos.write(classFile);
-            fos.flush();
-            System.out.println("代理类class文件写入成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("写入出错类");
-        }
-    }
+
 }

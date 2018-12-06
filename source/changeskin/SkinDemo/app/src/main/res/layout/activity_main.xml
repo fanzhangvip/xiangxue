@@ -9,7 +9,7 @@
     tools:context=".MainActivity"
     tools:layout_editor_absoluteY="81dp">
 
-
+    <!--TODO: 关键技术点2 isSupport=true标识当前控件支持换肤-->
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
-
+    <!--TODO: 关键技术点2 可以支持自定义View -->
     <com.enjoy02.skindemo.ZeroView
         android:id="@+id/zeroView"
         android:layout_width="0dp"

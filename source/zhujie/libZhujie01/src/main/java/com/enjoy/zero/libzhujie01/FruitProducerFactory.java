@@ -33,4 +33,7 @@ public @interface FruitProducerFactory {
      * 水果工厂地址
      */
     public String address() default "";
+
+
+
 }

@@ -47,6 +47,7 @@ public class SkinFactory implements LayoutInflater.Factory2 {
     @Override
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
 
+        // TODO: 关键点1：
         View view = mDelegate.createView(parent, name, context, attrs);
         if (view == null) {
             mConstructorArgs[0] = context;
@@ -64,7 +65,7 @@ public class SkinFactory implements LayoutInflater.Factory2 {
 
         }
 
-        //收集需要换肤的View
+        //TODO: 关键点2 收集需要换肤的View
         collectSkinView(context,attrs,view);
 
         return view;
@@ -105,6 +106,7 @@ public class SkinFactory implements LayoutInflater.Factory2 {
         Object[] args = mConstructorArgs;
         args[1] = attrs;
         try {
+            //通过反射创建View对象
             final View view = constructor.newInstance(args);
             return view;
         } catch (Exception e) {
@@ -119,7 +121,7 @@ public class SkinFactory implements LayoutInflater.Factory2 {
      */
     private void collectSkinView(Context context, AttributeSet attrs, View view) {
 
-        //获取我们自己定义的属性
+        // 获取我们自己定义的属性
         TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.Skinable);
         boolean isSupport = a.getBoolean(R.styleable.Skinable_isSupport,false);
         if(isSupport){
@@ -151,7 +153,7 @@ static class SkinView {
     HashMap<String, String> attrsMap;
 
     /**
-     * TODO: 换肤
+     * TODO: 应用换肤
      */
     public void changeSkin() {
         if (!TextUtils.isEmpty(attrsMap.get("background"))) {

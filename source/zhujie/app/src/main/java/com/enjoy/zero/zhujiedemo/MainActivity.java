@@ -55,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+//    @Override
+    public void test(){}
+
     @Onclick({R.id.button8, R.id.button9, R.id.button10, R.id.button11, R.id.button12, R.id.button13, R.id.button14, R.id.button15, R.id.textView, R.id.button, R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7})
     public void onViewClicked(View view) {
         if (view instanceof Button) {

@@ -25,16 +25,24 @@
         android:id="@+id/oneFragment1"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment1"
         android:label="fragment_11"
-        tools:layout="@layout/fragment_11" >
+        tools:layout="@layout/fragment_11">
         <action
             android:id="@+id/action_oneFragment1_to_oneFragment2"
-            app:destination="@id/oneFragment2" />
+            app:destination="@id/oneFragment2"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <!-- 1）enter 指定向栈中放入新的Fragment时的动画 （当前栈顶是oneFragment1）  oneFragment2进入动画
+             2）exit 指定向栈中弹出当前栈顶的Fragment时的动画 （当前栈顶是oneFragment1） oneFragment1退出动画
+             3）popEnter 指定由于当前栈顶Fragment弹出而显示底层的Fragment时的动画 返回时 （当前栈顶是oneFragment2） oneFragment1进入的动画
+             4）popExit 指定当前栈顶的Fragment被弹出时的动画  返回时（当前栈顶是oneFragment2） oneFragment2退出的动画-->
     </fragment>
     <fragment
         android:id="@+id/oneFragment2"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment2"
         android:label="fragment_12"
-        tools:layout="@layout/fragment_12" >
+        tools:layout="@layout/fragment_12">
         <action
             android:id="@+id/action_oneFragment2_to_oneFragment3"
             app:destination="@id/oneFragment3" />
@@ -43,7 +51,7 @@
         android:id="@+id/oneFragment3"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment3"
         android:label="fragment_13"
-        tools:layout="@layout/fragment_13" >
+        tools:layout="@layout/fragment_13">
         <action
             android:id="@+id/action_oneFragment3_to_oneFragment4"
             app:destination="@id/oneFragment4" />
@@ -52,7 +60,7 @@
         android:id="@+id/oneFragment4"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment4"
         android:label="fragment_14"
-        tools:layout="@layout/fragment_14" >
+        tools:layout="@layout/fragment_14">
         <action
             android:id="@+id/action_oneFragment4_to_oneFragment1"
             app:destination="@id/oneFragment1"

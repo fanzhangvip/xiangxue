@@ -19,13 +19,9 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println(" Hello world");
-        AnnotatedElement element;
         Apple apple = new Apple();
         FuitTools.getFruitInfo(Apple.class);
 
-        FileFilter java = f -> f.getName().endsWith(".java");
-        new Main().r1.run();
-        new Main().r2.run();
     }
 
 }

@@ -28,4 +28,5 @@ public @interface FruitColor {
      * 颜色属性
      */
     Color fruitColor() default  Color.BLUE;
+
 }

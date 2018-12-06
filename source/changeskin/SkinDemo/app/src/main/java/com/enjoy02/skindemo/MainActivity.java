@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+        // TODO: 关键点1：hook系统创建view的过程
         mSkinFactory = new SkinFactory();
         mSkinFactory.setDelegate(getDelegate());
         LayoutInflater.from(this).setFactory2(mSkinFactory);
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 changeSkin();
             }
         });
+        getDrawable()
 
     }
 
