@@ -11,22 +11,22 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     private TextView mTextView;
 
-    private Button mButton;
-    private Button mButton1;
-    private Button mButton2;
-    private Button mButton3;
-    private Button mButton4;
-    private Button mButton5;
-    private Button mButton6;
-    private Button mButton7;
-    private Button mButton8;
-    private Button mButton9;
-    private Button mButton10;
-    private Button mButton11;
-    private Button mButton12;
-    private Button mButton13;
-    private Button mButton14;
-    private Button mButton15;
+     Button mButton;
+     Button mButton1;
+     Button mButton2;
+     Button mButton3;
+     Button mButton4;
+     Button mButton5;
+     Button mButton6;
+     Button mButton7;
+     Button mButton8;
+     Button mButton9;
+     Button mButton10;
+     Button mButton11;
+     Button mButton12;
+     Button mButton13;
+     Button mButton14;
+     Button mButton15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

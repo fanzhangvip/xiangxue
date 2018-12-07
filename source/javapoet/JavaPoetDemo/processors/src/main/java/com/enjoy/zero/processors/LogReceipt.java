@@ -1,4 +1,4 @@
-package com.enjoy.zero.bean;
+package com.enjoy.zero.processors;
 
 /**
  * [享学课堂] {@link https://enjoy.ke.qq.com}
@@ -8,6 +8,5 @@ package com.enjoy.zero.bean;
  * TODO: VIP课程咨询安生老师QQ 669100976
  * 类说明:
  */
-public class Human extends Anim{
-    public String name;
+class LogReceipt {
 }

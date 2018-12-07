@@ -7,6 +7,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Filer;
+import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -14,6 +16,8 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 /**方案1
  * 运行注解处理器
@@ -34,6 +38,25 @@ import javax.lang.model.element.TypeElement;
 public class MyProcessor extends AbstractProcessor {
 
     /**
+     * Types是一个用来处理TypeMirror的工具
+     */
+    private Types typeUtils;
+    /**
+     * Elements是一个用来处理Element的工具
+     */
+    private Elements elementUtils;
+    /**
+     * 生成java源码
+     */
+    private Filer filer;
+    /**
+     * Messager提供给注解处理器一个报告错误、警告以及提示信息的途径。
+     * 它不是注解处理器开发者的日志工具，
+     * 而是用来写一些信息给使用此注解器的第三方开发者的
+     */
+    private Messager messager;
+
+    /**
      * init()方法会被注解处理工具调用，并输入ProcessingEnviroment参数。
      * ProcessingEnviroment提供很多有用的工具类Elements, Types 和 Filer
      * @param processingEnv 提供给 processor 用来访问工具框架的环境
@@ -41,6 +64,10 @@ public class MyProcessor extends AbstractProcessor {
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
+        typeUtils = processingEnv.getTypeUtils();
+        elementUtils = processingEnv.getElementUtils();
+        filer = processingEnv.getFiler();
+        messager = processingEnv.getMessager();
     }
 
     /**

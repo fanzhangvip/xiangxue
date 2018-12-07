@@ -34,14 +34,15 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
-//@AutoService(Processor.class)
-public class LCJViewBinderProcessor extends AbstractProcessor {
+@AutoService(Processor.class)
+public class MyViewBinderProcessor extends AbstractProcessor {
 
 
     static class AnnotatedClass {
         private static class TypeUtil {
             static final ClassName BINDER = ClassName.get("com.enjoy.zero.api", "ViewBinder");
             static final ClassName PROVIDER = ClassName.get("com.enjoy.zero.api", "ViewFinder");
+
         }
 
         private TypeElement mTypeElement;
@@ -52,10 +53,14 @@ public class LCJViewBinderProcessor extends AbstractProcessor {
             mTypeElement = typeElement;
             mElements = elements;
             mFields = new ArrayList<>();
+            System.out.println("mTypeElement: " + mTypeElement);
+            System.out.println("mElements: " + mElements);
+            System.out.println("mFields: " + mFields);
         }
 
         void addField(BindViewField field) {
             mFields.add(field);
+            System.out.println("mFields: " + mFields);
         }
 
         JavaFile generateFile() {
@@ -89,8 +94,14 @@ public class LCJViewBinderProcessor extends AbstractProcessor {
                     .build();
 
             String packageName = mElements.getPackageOf(mTypeElement).getQualifiedName().toString();
-
-            return JavaFile.builder(packageName, injectClass).build();
+            System.out.println("generateFile packageName: " + packageName);
+            JavaFile result = JavaFile.builder(packageName, injectClass).build();
+            try {
+                result.writeTo(System.out);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
         }
     }
 
@@ -104,9 +115,10 @@ public class LCJViewBinderProcessor extends AbstractProcessor {
                         BindView.class.getSimpleName()));
             }
             mVariableElement = (VariableElement) element;
-
+            System.out.println("BindViewField mVariableElement: " + mVariableElement);
             BindView bindView = mVariableElement.getAnnotation(BindView.class);
             mResId = bindView.value();
+            System.out.println("BindViewField mResId: " + mResId);
             if (mResId < 0) {
                 throw new IllegalArgumentException(
                         String.format("value() in %s for field %s is not valid !", BindView.class.getSimpleName(),
@@ -154,6 +166,10 @@ public class LCJViewBinderProcessor extends AbstractProcessor {
         mElementUtils = processingEnv.getElementUtils();
         mMessager = processingEnv.getMessager();
         mAnnotatedClassMap = new TreeMap<>();
+        System.out.println("init mFiler: " + mFiler);
+        System.out.println("init mElementUtils: " + mElementUtils);
+        System.out.println("init mMessager: " + mMessager);
+        System.out.println("init mAnnotatedClassMap: " + mAnnotatedClassMap);
     }
 
 
@@ -169,6 +185,7 @@ public class LCJViewBinderProcessor extends AbstractProcessor {
 
         for (AnnotatedClass annotatedClass : mAnnotatedClassMap.values()) {
             try {
+                System.out.println("process ->  annotatedClass: " + annotatedClass);
                 annotatedClass.generateFile().writeTo(mFiler);
             } catch (IOException e) {
                 error("Generate file failed, reason: %s", e.getMessage());
@@ -183,12 +200,16 @@ public class LCJViewBinderProcessor extends AbstractProcessor {
             AnnotatedClass annotatedClass = getAnnotatedClass(element);
             BindViewField bindViewField = new BindViewField(element);
             annotatedClass.addField(bindViewField);
+            System.out.println("processBindView annotatedClass: " + annotatedClass);
+            System.out.println("processBindView bindViewField: " + bindViewField);
         }
     }
 
     private AnnotatedClass getAnnotatedClass(Element element) {
         TypeElement typeElement = (TypeElement) element.getEnclosingElement();
         String fullName = typeElement.getQualifiedName().toString();
+        System.out.println("getAnnotatedClass typeElement: " + typeElement);
+        System.out.println("getAnnotatedClass fullName: " + fullName);
         AnnotatedClass annotatedClass = mAnnotatedClassMap.get(fullName);
         if (annotatedClass == null) {
             annotatedClass = new AnnotatedClass(typeElement, mElementUtils);

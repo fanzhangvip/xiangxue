@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 /**
- * Activity UI查找提供者
+ * Activity UI查找器
  */
 
 public class ActivityViewFinder implements ViewFinder {

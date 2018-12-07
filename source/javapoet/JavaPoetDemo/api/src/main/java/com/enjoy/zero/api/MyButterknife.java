@@ -5,7 +5,20 @@ import android.app.Activity;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class LCJViewBinder {
+
+//public class Sample         // TypeElement
+//        <T extends List> {  // TypeParameterElement
+//
+//    private int num;        // VariableElement
+//    String name;            // VariableElement
+//
+//    public Sample() {}      // ExecuteableElement
+//
+//    public void setName(    // ExecuteableElement
+//                            String name     // VariableElement
+//    ) {}
+//}
+public class MyButterknife {
     private static final ActivityViewFinder activityFinder = new ActivityViewFinder();//默认声明一个Activity View查找器
     private static final Map<String, ViewBinder> binderMap = new LinkedHashMap<>();//管理保持管理者Map集合
 
@@ -27,15 +40,19 @@ public class LCJViewBinder {
      * @param finder ui绑定提供者接口
      */
     private static void bind(Object host, Object object, ViewFinder finder) {
+        //获取注解使用类的 类名
         String className = host.getClass().getName();
         try {
+            //看下对应的ViewBinder是否存在
             ViewBinder binder = binderMap.get(className);
             if (binder == null) {
+                //不存在则通过反射创建一个 然后存入缓存 这个类是通过javapoet生成的
                 Class aClass = Class.forName(className + "$ViewBinder");
                 binder = (ViewBinder) aClass.newInstance();
                 binderMap.put(className, binder);
             }
             if (binder != null) {
+                //把finder类跟使用注解类的 类 绑定
                 binder.bindView(host, object, finder);
             }
         } catch (ClassNotFoundException e) {

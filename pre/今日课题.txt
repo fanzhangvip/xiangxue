@@ -64,6 +64,21 @@ github token e40cff925e7717ea17b9c4a6b0daf8b525d12713
 
 
 
+今日课题：Android进阶必学-手写butterknife框架
+上课时间：2018/12/07 15:35
+授课讲师：Zero老师[享学课堂]
+课程链接：
+课程内容：
+1，APT是什么？
+2，编译期注解
+3，javapoet，一个可以帮你生成代码的框架
+4，butterknife核心原理分析
+5，手写butterknife框架
+6，互动答疑。
+
+
+
+
 
 
 

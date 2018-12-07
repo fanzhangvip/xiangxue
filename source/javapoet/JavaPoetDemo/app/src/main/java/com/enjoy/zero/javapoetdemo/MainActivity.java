@@ -2,11 +2,12 @@ package com.enjoy.zero.javapoetdemo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.enjoy.zero.annotations.BindView;
 import com.enjoy.zero.annotations.MyAnnotation;
-import com.enjoy.zero.api.LCJViewBinder;
+import com.enjoy.zero.api.MyButterknife;
 
 
 @MyAnnotation("Hello World")
@@ -15,17 +16,20 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.test)
     TextView mTextView;
 
+    @BindView(R.id.button)
+    Button mButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LCJViewBinder.bind(this);
+        MyButterknife.bind(this);
         mTextView.setText("hahahahahah.....");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LCJViewBinder.unBind(this);
+        MyButterknife.unBind(this);
     }
 }

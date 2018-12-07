@@ -8,6 +8,5 @@ package com.enjoy.zero.bean;
  * TODO: VIP课程咨询安生老师QQ 669100976
  * 类说明:
  */
-public class Human extends Anim{
-    public String name;
+public class Anim {
 }
