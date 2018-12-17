@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * TODO: VIP课程咨询伊娜老师QQ 2133576719
  * 类说明: 水果名称注解
  */
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FruitName {

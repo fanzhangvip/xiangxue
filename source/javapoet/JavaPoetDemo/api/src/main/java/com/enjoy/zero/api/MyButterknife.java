@@ -31,13 +31,12 @@ public class MyButterknife {
         bind(activity, activity, activityFinder);
     }
 
-
     /**
      * '注解绑定
      *
-     * @param host   表示注解 View 变量所在的类，也就是注解类
+     * @param host   表示注解 View 变量所在的类，也就是注解类 进行绑定的目标对象
      * @param object 表示查找 View 的地方，Activity & View 自身就可以查找，Fragment 需要在自己的 itemView 中查找
-     * @param finder ui绑定提供者接口
+     * @param finder ui绑定提供者接口 这个用来统一处理Activity、View、Dialog等查找 View 和 Context 的方法
      */
     private static void bind(Object host, Object object, ViewFinder finder) {
         //获取注解使用类的 类名

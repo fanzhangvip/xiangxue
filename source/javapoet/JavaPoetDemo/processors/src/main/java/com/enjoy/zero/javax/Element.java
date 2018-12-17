@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.lang.model.AnnotatedConstruct;
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.ElementVisitor;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.Name;
 
@@ -86,4 +87,15 @@ public interface Element extends AnnotatedConstruct {
      */
     @Override
     <A extends Annotation> A getAnnotation(Class<A> annotationType);
+
+    /**
+     * Applies a visitor to this element.
+     *
+     * @param <R> the return type of the visitor's methods
+     * @param <P> the type of the additional parameter to the visitor's methods
+     * @param v   the visitor operating on this element
+     * @param p   additional parameter to the visitor
+     * @return a visitor-specified result
+     */
+    <R, P> R accept(ElementVisitor<R, P> v, P p);
 }

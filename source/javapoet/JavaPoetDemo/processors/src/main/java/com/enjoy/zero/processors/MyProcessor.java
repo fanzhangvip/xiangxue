@@ -22,11 +22,8 @@ import javax.lang.model.util.Types;
 /**方案1
  * 运行注解处理器
  * 1、在 processors 库的 main 目录下新建 resources 资源文件夹；
- *
  * 2、在 resources文件夹下建立 META-INF/services 目录文件夹；
- *
  * 3、在 META-INF/services 目录文件夹下创建 javax.annotation.processing.Processor 文件；
- *
  * 4、在 javax.annotation.processing.Processor 文件写入注解处理器的全称，包括包路径；
  */
 
