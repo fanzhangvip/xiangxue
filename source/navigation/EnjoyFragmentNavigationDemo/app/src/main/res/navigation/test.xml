@@ -5,6 +5,7 @@
     android:id="@+id/test"
     app:startDestination="@id/oneFragment5">
 
+
     <fragment
         android:id="@+id/oneFragment5"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment"
@@ -12,7 +13,11 @@
         tools:layout="@layout/fragment_1" >
         <action
             android:id="@+id/action_oneFragment5_to_twoFragment"
-            app:destination="@id/twoFragment" />
+            app:destination="@id/twoFragment"
+            app:enterAnim="@anim/slide_out_right"
+            app:exitAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
 
     </fragment>
     <fragment
@@ -21,7 +26,7 @@
         android:label="fragment_2"
         tools:layout="@layout/fragment_2" >
         <action
-            android:id="@+id/action_twoFragment_to_threeFragment"
+            android:id="@+id/action_twoFragment_to_threeFragment2"
             app:destination="@id/threeFragment" />
     </fragment>
     <fragment
@@ -30,16 +35,7 @@
         android:label="fragment_3"
         tools:layout="@layout/fragment_3" >
         <action
-            android:id="@+id/action_threeFragment_to_fourFragment"
-            app:destination="@id/fourFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/fourFragment"
-        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.FourFragment"
-        android:label="fragment_4"
-        tools:layout="@layout/fragment_4" >
-        <action
-            android:id="@+id/action_fourFragment_to_oneFragment5"
+            android:id="@+id/action_threeFragment_to_oneFragment5"
             app:destination="@id/oneFragment5"
             app:popUpTo="@+id/oneFragment5" />
     </fragment>
@@ -48,5 +44,6 @@
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
-    <include app:graph="@navigation/navigation_1" />
+    <include app:graph="@navigation/nav_graph" />
+
 </navigation>

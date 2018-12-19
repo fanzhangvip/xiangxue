@@ -1,7 +1,11 @@
 package com.enjoy02.changeskindemo;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -13,16 +17,27 @@ import android.view.View;
  * 类说明:
  */
 public class ZeroView extends View {
+    private Bitmap mBitmap;
+
     public ZeroView(Context context) {
-        super(context);
+        this(context,null);
     }
 
     public ZeroView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs,0);
     }
 
     public ZeroView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        Log.i("Zero","mBitmap: " + mBitmap);
+
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        canvas.drawBitmap(mBitmap, 0, 0, null);
+
+    }
 }

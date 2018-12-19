@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.enjoy02.qqskindemo.skin.SkinEngine;
 
 
 public class MainActivity extends Activity {
