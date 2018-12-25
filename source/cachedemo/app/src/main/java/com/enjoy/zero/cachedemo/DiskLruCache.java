@@ -114,20 +114,30 @@ public final class DiskLruCache implements Closeable {
     /*
      * This cache uses a journal file named "journal". A typical journal file
      * looks like this:
-     *     libcore.io.DiskLruCache
-     *     1
-     *     100
-     *     2
+     *     libcore.io.DiskLruCache //magic number
+     *     1                       //版本号
+     *     100                     //客户端应用的版本号
+     *     2                       //每个缓存条目的文件数
      *
+     *     //表明之前的某一 DIRTY 记录已经修改完毕（通常是执行 Editor#commit() 的结果），
+     *     //这一行结尾会有条目的各个文件的长度
      *     CLEAN 3400330d1dfc7f3f7f4b8d4d803dfcf6 832 21054
+     *     //记录了某一个条目开始被编辑，有可能是新增条目，也有可能是修改已有条目。
+     *     //接下来需要有 CLEAN 或 REMOVE 状态来平衡 DIRTY 状态，否则这就是无效的一条记录。
      *     DIRTY 335c4c6028171cfddfbaae1a9c313c52
      *     CLEAN 335c4c6028171cfddfbaae1a9c313c52 3934 2342
+     *     //录了某一条目的移除行为
      *     REMOVE 335c4c6028171cfddfbaae1a9c313c52
      *     DIRTY 1ab96a171faeeee38496d8b330771a7a
      *     CLEAN 1ab96a171faeeee38496d8b330771a7a 1600 234
+     *     //记录了某一条的读取行为。记录读取行为的目的是为了在重构条目索引时将对应的节点移动到链表的尾部，
+     *     //以便于 LRU 算法的执行
      *     READ 335c4c6028171cfddfbaae1a9c313c52
      *     READ 3400330d1dfc7f3f7f4b8d4d803dfcf6
      *
+     * DiskLruCache 的很多文件操作都采用了事务的处理方式，即修改文件前先写入一个同名的 tmp 文件，
+     * 当所有内容写完后再将 tmp 文件的扩展名去掉以覆盖原有文件，
+     * 这样做的好处就是不会因为应用的异常退出或 crash 而出现 Corrupt Data，保证了原有文件的完整性
      * The first five lines of the journal form its header. They are the
      * constant string "libcore.io.DiskLruCache", the disk cache's version,
      * the application's version, the value count, and a blank line.
@@ -315,9 +325,12 @@ public final class DiskLruCache implements Closeable {
 
         // prefer to pick up where we left off
         DiskLruCache cache = new DiskLruCache(directory, appVersion, valueCount, maxSize);
+        //如果备份文件存在
         if (cache.journalFile.exists()) {
             try {
+                //读取journal文件，根据记录中不同的操作类型进行相应的处理。
                 cache.readJournal();
+                //计算当前缓存容量的大小
                 cache.processJournal();
                 cache.journalWriter = new BufferedWriter(new FileWriter(cache.journalFile, true),
                         IO_BUFFER_SIZE);
@@ -330,8 +343,10 @@ public final class DiskLruCache implements Closeable {
         }
 
         // create a new empty cache
+        //创建新的缓存目录
         directory.mkdirs();
         cache = new DiskLruCache(directory, appVersion, valueCount, maxSize);
+        //调用新的方法建立新的journal文件
         cache.rebuildJournal();
         return cache;
     }
@@ -339,11 +354,13 @@ public final class DiskLruCache implements Closeable {
     private void readJournal() throws IOException {
         InputStream in = new BufferedInputStream(new FileInputStream(journalFile), IO_BUFFER_SIZE);
         try {
+            //读取文件头，并进行校验。
             String magic = readAsciiLine(in);
             String version = readAsciiLine(in);
             String appVersionString = readAsciiLine(in);
             String valueCountString = readAsciiLine(in);
             String blank = readAsciiLine(in);
+            //检查前五行的内容是否合法
             if (!MAGIC.equals(magic)
                     || !VERSION_1.equals(version)
                     || !Integer.toString(appVersion).equals(appVersionString)
@@ -355,6 +372,7 @@ public final class DiskLruCache implements Closeable {
 
             while (true) {
                 try {
+                    //开启死循环，逐行读取journal内容
                     readJournalLine(readAsciiLine(in));
                 } catch (EOFException endOfJournal) {
                     break;
@@ -366,30 +384,43 @@ public final class DiskLruCache implements Closeable {
     }
 
     private void readJournalLine(String line) throws IOException {
+        //每行记录都是用空格开分隔的，这里取第一个空格出现的位置
         String[] parts = line.split(" ");
         if (parts.length < 2) {
+            //如果没有空格，则说明是非法的记录
             throw new IOException("unexpected journal line: " + line);
         }
 
+       //第一个空格前面就是CLEAN、READ这些操作类型，接下来针对不同的操作类型进行
+        //相应的处理
         String key = parts[1];
+        //1. 如果该条记录以REMOVE为开头，则执行删除操作。
         if (parts[0].equals(REMOVE) && parts.length == 2) {
             lruEntries.remove(key);
             return;
         }
 
+        //2. 如果该key不存在，则新建Entry并加入lruEntries。
         Entry entry = lruEntries.get(key);
         if (entry == null) {
             entry = new Entry(key);
             lruEntries.put(key, entry);
         }
 
+        //3. 如果该条记录以CLEAN为开头，则初始化entry，并设置entry.readable为true、设置entry.currentEditor为
+        //null，初始化entry长度。
         if (parts[0].equals(CLEAN) && parts.length == 2 + valueCount) {
+            //数组中其实是数字，其实就是文件的大小。因为可以通过valueCount来设置一个key对应的value的个数，
+            //所以文件大小也是有valueCount个
             entry.readable = true;
             entry.currentEditor = null;
             entry.setLengths(copyOfRange(parts, 2, parts.length));
         } else if (parts[0].equals(DIRTY) && parts.length == 2) {
+            //4. 如果该条记录以DIRTY为开头。则设置currentEditor对象。
+            //DIRTY 335c4c6028171cfddfbaae1a9c313c52
             entry.currentEditor = new Editor(entry);
         } else if (parts[0].equals(READ) && parts.length == 2) {
+            //5. 如果该条记录以READ为开头，则什么也不做。
             // this work was already done by calling lruEntries.get()
         } else {
             throw new IOException("unexpected journal line: " + line);
@@ -401,14 +432,19 @@ public final class DiskLruCache implements Closeable {
      * cache. Dirty entries are assumed to be inconsistent and will be deleted.
      */
     private void processJournal() throws IOException {
+        // //删除journal.tmp临时文件
         deleteIfExists(journalFileTmp);
+        //变量缓存集合里的所有元素
         for (Iterator<Entry> i = lruEntries.values().iterator(); i.hasNext(); ) {
             Entry entry = i.next();
+            //如果当前元素entry的currentEditor不为空，则计算该元素的总大小，并添加到总缓存容量size中去
             if (entry.currentEditor == null) {
                 for (int t = 0; t < valueCount; t++) {
                     size += entry.lengths[t];
                 }
             } else {
+                //如果当前元素entry的currentEditor不为空，代表该元素时非法缓存记录，该记录以及对应的缓存文件
+                //都会被删除掉。
                 entry.currentEditor = null;
                 for (int t = 0; t < valueCount; t++) {
                     deleteIfExists(entry.getCleanFile(t));
@@ -427,7 +463,7 @@ public final class DiskLruCache implements Closeable {
         if (journalWriter != null) {
             journalWriter.close();
         }
-
+        //写入文件头
         Writer writer = new BufferedWriter(new FileWriter(journalFileTmp), IO_BUFFER_SIZE);
         writer.write(MAGIC);
         writer.write("\n");
@@ -479,11 +515,15 @@ public final class DiskLruCache implements Closeable {
     public synchronized Snapshot get(String key) throws IOException {
         checkNotClosed();
         validateKey(key);
+        //获取对应的entry
+        //LinkedHashMap 和 HashMap 的一个比较大的区别，
+        // LinkedHashMap 中的一个构造函数包含了一个参数，用来控制遍历时的顺序，当使用访问顺序来遍历时，每次访问条目，LinkedHashMap 都会将其移至链表的尾部
         Entry entry = lruEntries.get(key);
         if (entry == null) {
             return null;
         }
 
+        //如果entry不可读，说明可能在编辑，则返回空
         if (!entry.readable) {
             return null;
         }
@@ -493,6 +533,7 @@ public final class DiskLruCache implements Closeable {
          * snapshot. If we opened streams lazily then the streams could come
          * from different edits.
          */
+        //打开所有缓存文件的输入流，等待被读取。
         InputStream[] ins = new InputStream[valueCount];
         try {
             for (int i = 0; i < valueCount; i++) {
@@ -504,11 +545,14 @@ public final class DiskLruCache implements Closeable {
         }
 
         redundantOpCount++;
+        //向journal写入一行READ开头的记录，表示执行了一次读取操作
         journalWriter.append(READ + ' ' + key + '\n');
+        //如果缓存总大小已经超过了设定的最大缓存大小或者操作次数超过了2000次，
+        // 就开一个线程将集合中的数据删除到小于最大缓存大小为止并重新写journal文件
         if (journalRebuildRequired()) {
             executorService.submit(cleanupCallable);
         }
-
+        //返回一个缓存文件快照，包含缓存文件大小，输入流等信息。
         return new Snapshot(key, entry.sequenceNumber, ins);
     }
 
@@ -524,23 +568,30 @@ public final class DiskLruCache implements Closeable {
     private synchronized Editor edit(String key, long expectedSequenceNumber) throws IOException {
         checkNotClosed();
         validateKey(key);
+        //从之前的缓存中读取对应的entry
         Entry entry = lruEntries.get(key);
+        //当前无法写入磁盘缓存
         if (expectedSequenceNumber != ANY_SEQUENCE_NUMBER
                 && (entry == null || entry.sequenceNumber != expectedSequenceNumber)) {
             return null; // snapshot is stale
         }
+        //如果entry为空，则新建一个entry对象加入到缓存集合中
         if (entry == null) {
             entry = new Entry(key);
             lruEntries.put(key, entry);
+            //currentEditor不为空，表示当前有别的插入操作在执行
         } else if (entry.currentEditor != null) {
             return null; // another edit is in progress
         }
 
+        //为当前创建的entry知道新创建的editor
         Editor editor = new Editor(entry);
         entry.currentEditor = editor;
 
         // flush the journal before creating files to prevent file leaks
+        //向journal写入一行DIRTY + 空格 + key的记录，表示这个key对应的缓存正在处于被编辑的状态。
         journalWriter.write(DIRTY + ' ' + key + '\n');
+        //刷新文件里的记录
         journalWriter.flush();
         return editor;
     }
@@ -578,6 +629,9 @@ public final class DiskLruCache implements Closeable {
         }
 
         // if this edit is creating the entry for the first time, every index must have a value
+        // 如果此条目是第一次创建的，需要保证它的每个 index 都有实际文件可以读取，
+        // 否则抛出异常。
+        // readable 成员变量表示了这个条目是否已经被成功提交过。
         if (success && !entry.readable) {
             for (int i = 0; i < valueCount; i++) {
                 if (!entry.getDirtyFile(i).exists()) {
@@ -586,36 +640,53 @@ public final class DiskLruCache implements Closeable {
                 }
             }
         }
-
+        // 根据成功与否来处理条目的所有 index，对于失败的编辑操作，我们删掉其
+        // dirty file，对于成功提交的条目，我们需要计算它各个 index 最新的
+        // 文件长度。
         for (int i = 0; i < valueCount; i++) {
+            //获取对象缓存的临时文件
             File dirty = entry.getDirtyFile(i);
             if (success) {
+                //如果临时文件存在，则将其重名为正式的缓存文件
                 if (dirty.exists()) {
                     File clean = entry.getCleanFile(i);
                     dirty.renameTo(clean);
                     long oldLength = entry.lengths[i];
                     long newLength = clean.length();
                     entry.lengths[i] = newLength;
+                    //重新计算缓存的大小
                     size = size - oldLength + newLength;
                 }
             } else {
+                //如果写入不成功，则删除掉临时文件。
                 deleteIfExists(dirty);
             }
         }
 
+        // 记录操作次数。 操作次数自增
         redundantOpCount++;
+        //将当前缓存的编辑器置为空
         entry.currentEditor = null;
         if (entry.readable | success) {
+            // 如果条目已经被创建而此次编辑失败了，我们需要写入一条 CLEAN
+            // 记录，因为要平衡之前的 DIRTY 记录，否则条目就无效了。而对
+            // 于成功提交的编辑，我们也肯定是要写入 CLEAN 记录的。
             entry.readable = true;
+            //向journal写入一行CLEAN开头的记录，表示缓存成功写入到磁盘。
             journalWriter.write(CLEAN + ' ' + entry.key + entry.getLengths() + '\n');
             if (success) {
+                //// 成功提交，自增版本号，原有的 Snapshot 对象将无效。
                 entry.sequenceNumber = nextSequenceNumber++;
             }
         } else {
+            // 对于新创建而又提交失败的条目来说，我们需要将其从链表中删除，
+            // 此外还要写入一条 REMOVE 记录来平衡 DIRTY 记录。
             lruEntries.remove(entry.key);
             journalWriter.write(REMOVE + ' ' + entry.key + '\n');
         }
 
+        //如果缓存总大小已经超过了设定的最大缓存大小或者操作次数超过了2000次，
+        // 就开一个线程将集合中的数据删除到小于最大缓存大小为止并重新写journal文件
         if (size > maxSize || journalRebuildRequired()) {
             executorService.submit(cleanupCallable);
         }
@@ -624,6 +695,19 @@ public final class DiskLruCache implements Closeable {
     /**
      * We only rebuild the journal when it will halve the size of the journal
      * and eliminate at least 2000 ops.
+     * 重建日志，随着缓存操作的不断进行，日志文件会愈来愈庞大，为了将其稳定在一个合理的大小，
+     * 我们就需要适时地对日志文件进行重建。重建的条件由这个方法决定：
+     *
+     * 当操作的数量达到一定阈值，且记录数多于条目数时才会触发重建。因为有的时候缓存条目很多，
+     * 可能超过了清理阈值，但没有冗余记录存在（记录数多于条目数），这时就不需要再重建日志了
+     *
+     * 而重建日志的逻辑也很简单，依次遍历条目，根据其是否正在编辑来写入 DIRTY 或 CLEAN 记录就可以了，
+     * 重建的目的就是为了去除 READ 和 REMOVE 记录，因为节点顺序已经调整好了，
+     * 就不需要 READ 记录再去重复调整了，而已经删除的条目也不会有对应的 CLEAN 记录，
+     * 因此 REMOVE 记录也没有必要存在了
+     *
+     * 此外 DiskLruCache 还会有一个线程来执行清理工作，
+     * 很多会写入日志的操作结束时都会让这个线程执行一次清理操作，以保证日志的简洁
      */
     private boolean journalRebuildRequired() {
         final int REDUNDANT_OP_COMPACT_THRESHOLD = 2000;
@@ -640,11 +724,13 @@ public final class DiskLruCache implements Closeable {
     public synchronized boolean remove(String key) throws IOException {
         checkNotClosed();
         validateKey(key);
+        //获取对应的entry
         Entry entry = lruEntries.get(key);
         if (entry == null || entry.currentEditor != null) {
             return false;
         }
 
+        //删除对应的缓存文件，并将缓存大小置为0.
         for (int i = 0; i < valueCount; i++) {
             File file = entry.getCleanFile(i);
             if (!file.delete()) {
@@ -655,9 +741,12 @@ public final class DiskLruCache implements Closeable {
         }
 
         redundantOpCount++;
+        //向journal文件添加一行REMOVE开头的记录，表示执行了一次删除操作。
         journalWriter.append(REMOVE + ' ' + key + '\n');
         lruEntries.remove(key);
 
+        //如果缓存总大小已经超过了设定的最大缓存大小或者操作次数超过了2000次，
+        // 就开一个线程将集合中的数据删除到小于最大缓存大小为止并重新写journal文件
         if (journalRebuildRequired()) {
             executorService.submit(cleanupCallable);
         }
@@ -707,6 +796,10 @@ public final class DiskLruCache implements Closeable {
         journalWriter = null;
     }
 
+    /**
+     * 当访问一个条目时，把它放到整个链表的尾部，当清理条目时，从链表的开头开始清理，这样最少被访问的条目就会被优先清理掉
+     * @throws IOException
+     */
     private void trimToSize() throws IOException {
         while (size > maxSize) {
 //            Map.Entry<String, Entry> toEvict = lruEntries.eldest();
@@ -795,6 +888,8 @@ public final class DiskLruCache implements Closeable {
         /**
          * Returns an unbuffered input stream to read the last committed value,
          * or null if no value has been committed.
+         * 获取此条目的一个输入流，它会创建一个基于 clean file 的一个 FileInputStream，
+         * 因此没有被 commit 的脏数据不会被读取。通常，读取缓存数据时我们不使用这个方法
          */
         public InputStream newInputStream(int index) throws IOException {
             synchronized (DiskLruCache.this) {
@@ -823,6 +918,11 @@ public final class DiskLruCache implements Closeable {
          * when writing to the filesystem, this edit will be aborted when
          * {@link #commit} is called. The returned output stream does not throw
          * IOExceptions.
+         * 获取此条目的一个输出流，类上上面的方法，只不过它基于的是一个临时文件（dirty file），
+         * 只有被 commit 后才会变为 clean file。另外值得注意的是，它返回的并非 FileOutputStream，
+         * 而是 FaultHidingOutputStream（FilterOutputStream 派生类），
+         * 它会 suppress 并记录所有 IO 错误，在 commit 时如果发现之前有 IO 错误发生，
+         * 则会自动 abort 掉此次编辑操作，以保证原有数据不会损坏。
          */
         public OutputStream newOutputStream(int index) throws IOException {
             synchronized (DiskLruCache.this) {
@@ -851,10 +951,12 @@ public final class DiskLruCache implements Closeable {
          * edit lock so another edit may be started on the same key.
          */
         public void commit() throws IOException {
+            //如果通过输出流写入缓存文件出错了就把集合中的缓存移除掉
             if (hasErrors) {
                 completeEdit(this, false);
                 remove(entry.key); // the previous entry is stale
             } else {
+                //调用completeEdit()方法完成缓存写入。
                 completeEdit(this, true);
             }
         }
