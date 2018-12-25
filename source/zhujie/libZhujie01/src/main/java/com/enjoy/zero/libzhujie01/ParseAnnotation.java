@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import sun.reflect.annotation.AnnotationParser;
 
 public class ParseAnnotation {
     /**
@@ -71,6 +70,5 @@ public class ParseAnnotation {
         parseTypeAnnotation();
         parseMethodAnnotation();
         parseConstructAnnotation();
-        AnnotationParser annotationInvocationHandler;
     }
 }

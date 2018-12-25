@@ -1,11 +1,8 @@
 package com.enjoy.zero.libdemo;
 
-import java.io.FileOutputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-
-import sun.misc.ProxyGenerator;
 
 /**
  * [享学课堂] {@link https://enjoy.ke.qq.com}
@@ -18,46 +15,35 @@ import sun.misc.ProxyGenerator;
 public class Main {
 
     public static void main(String[] args) {
-        //拍电影的公司 客户端
-        //创建一个真实对象
+
+        //客户端
+        //静态代理模式
+        //构建我们的被代理类
         Qiangge qiangge = new Qiangge();
-        // 创建一个代理对象  宋代理
-        //Songdaili songdaili = new Songdaili(qiangge);
-        //songdaili.film();
-        //生成动态代理对象 Proxy
+
+//        //构建我们的代理类
+//        Songzhe songzhe = new Songzhe(qiangge);
+//
+//        //执行拍电影业务
+//        songzhe.film();
+
+        // Proxy 经纪人公司 临时指派 小张
         /**
-         * classLoader 加载class文件
-         * Class<?>[]  需要实现的业务接口
-         * InvocationHandler  调用真实对象业务方法的地方
+         * ClassLoader : 加载class文件，和加载被代理类的classloader是同一个
+         * Class<?>[]:  需要实现的业务接口
+         * InvocationHandler：调用被代理类的真实业务的
          */
-        Iplayer proxy = (Iplayer) Proxy.newProxyInstance(qiangge.getClass().getClassLoader(),
-                new Class[]{Iplayer.class}, new InvocationHandler() {
+        IPlayer proxy = (IPlayer) Proxy.newProxyInstance(qiangge.getClass().getClassLoader(),
+                new Class[]{IPlayer.class}, new InvocationHandler() {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        System.out.println("经纪人公司派小张 帮强哥 处理签合同的业务");
+                        System.out.println("经纪人公司帮忙处理拍电影的业务洽谈工作");
                         qiangge.film();
                         return null;
                     }
                 });
-        generyProxyFile();
+
         proxy.film();
 
-    }
-
-    /**
-     * 生成代理类文件
-     */
-    public static void generyProxyFile() {
-        byte[] classFile = ProxyGenerator.generateProxyClass("iplay", Qiangge.class.getInterfaces());
-        String path = "./iplay.class";
-        try {
-            FileOutputStream fos = new FileOutputStream(path);
-            fos.write(classFile);
-            fos.flush();
-            System.out.println("代理类class文件写入成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("写入出错类");
-        }
     }
 }

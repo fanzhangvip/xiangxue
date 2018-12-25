@@ -173,16 +173,16 @@ public class MainActivity extends AppCompatActivity {
             Log.i("Zero", "run: " + Thread.currentThread().getName());
 
             //存入内存缓存
-            final Bitmap bitmapFromMemCache = mainActivity.getBitmapFromMemCache(bitmapUrl);
-            if (bitmapFromMemCache != null) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mImageLoadListener.imageLoad(bitmapUrl, bitmapFromMemCache);
-                    }
-                });
-                return;
-            }
+//            final Bitmap bitmapFromMemCache = mainActivity.getBitmapFromMemCache(bitmapUrl);
+//            if (bitmapFromMemCache != null) {
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mImageLoadListener.imageLoad(bitmapUrl, bitmapFromMemCache);
+//                    }
+//                });
+//                return;
+//            }
 
             Bitmap bitmap = null;
             HttpURLConnection connection = null;
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 if (resultBitmap == null) {
                     return;
                 }
-                mainActivity.addBitmapToMemoryCache(bitmapUrl, resultBitmap);
+//                mainActivity.addBitmapToMemoryCache(bitmapUrl, resultBitmap);
                 Log.i("Zero", "resultBitmap: " + resultBitmap);
                 handler.post(new Runnable() {
                     @Override

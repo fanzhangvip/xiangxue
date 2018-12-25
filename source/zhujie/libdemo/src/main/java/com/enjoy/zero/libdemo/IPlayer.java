@@ -8,10 +8,10 @@ package com.enjoy.zero.libdemo;
  * TODO: VIP课程咨询安生老师QQ 669100976
  * 类说明:
  */
-public interface Iplayer {
+public interface IPlayer {
 
     /**
-     * 拍电影业务接口
+     * 共同业务 拍电影
      */
     void film();
 }

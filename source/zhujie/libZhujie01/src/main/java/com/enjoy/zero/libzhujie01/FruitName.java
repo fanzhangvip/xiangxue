@@ -21,5 +21,5 @@ import java.lang.annotation.Target;
 public @interface FruitName {
     String value() default "";
 
-//    FruitColor[] color();
+//    FruitColor color();
 }

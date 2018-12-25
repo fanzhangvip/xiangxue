@@ -7,20 +7,20 @@ package com.enjoy.zero.libdemo;
  * TODO: 往期课程咨询芊芊老师QQ 2130753077
  * TODO: VIP课程咨询安生老师QQ 669100976
  * 类说明:
+ *  代理类，委托类
  */
-public class Songdaili implements Iplayer {
-    //真实对象
-    Qiangge mQiange;
+public class Songzhe implements IPlayer {
 
-    public Songdaili(Qiangge qiangge){
-        mQiange = qiangge;
+    Qiangge mQiangge;
+
+    public Songzhe(Qiangge qiangge){
+        mQiangge = qiangge;
     }
 
     @Override
     public void film() {
 
-        System.out.println("宋代理先跟公司谈好价格 约定时间地点");
-        //真正的拍电影
-        mQiange.film();
+        System.out.println("谈合同，定什么时间 什么地点拍， 通知强哥");
+        mQiangge.film();
     }
 }

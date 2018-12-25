@@ -10,6 +10,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     private TextView mTextView;
 
+
      Button mButton;
      Button mButton1;
      Button mButton2;
