@@ -48,11 +48,23 @@ public class MainActivity extends AppCompatActivity {
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
 
-        recyclerView.addItemDecoration(new GridDivider(this, 5, this.getResources().getColor(R.color.colorPrimary)));
+        recyclerView.addItemDecoration(new GridDividerItemDecoration(this));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(new MyAdapter(this));
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("Zero","onResume");
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Log.i("Zero","onWindowFocusChanged: " + hasFocus);
     }
 
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
