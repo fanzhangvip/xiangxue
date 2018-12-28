@@ -10,19 +10,26 @@ import java.util.HashMap;
  * TODO: VIP课程咨询安生老师QQ 669100976
  * 类说明:
  */
-public class LRUCache {
+public class MyLRUCache<K, V> {
+
+
+    private int cacheSize;
+    private HashMap<K, CacheNode> nodes;//缓存容器
+    private int currentSize;
+    private CacheNode first;//链表头
+    private CacheNode last;//链表尾
 
     class CacheNode {
         CacheNode prev;//前一节点
         CacheNode next;//后一节点
-        Object value;//值
-        Object key;//键
+        V value;//值
+        K key;//键
 
         CacheNode() {
         }
     }
 
-    public LRUCache(int i) {
+    public MyLRUCache(int i) {
         currentSize = 0;
         cacheSize = i;
         nodes = new HashMap(i);//缓存容器
@@ -30,12 +37,22 @@ public class LRUCache {
 
     @Override
     public String toString() {
-        return "LRUCache{" +
+        return "MyLRUCache{" +
                 "cacheSize=" + cacheSize +
                 ", currentSize=" + currentSize +
-                ", first=" + first.key + ": " + first.value +
-                ", last=" + last.key + ": " + last.value +
+                ", " + getKV() +
                 '}';
+    }
+
+    public String getKV() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("{ ");
+        for (K key : nodes.keySet()) {
+            sb.append(key).append(": ").append(nodes.get(key).value).append(", ");
+        }
+        sb.deleteCharAt(sb.lastIndexOf(", "));
+        sb.append("} ");
+        return sb.toString();
     }
 
     /**
@@ -44,7 +61,7 @@ public class LRUCache {
      * @param key
      * @return
      */
-    public Object get(Object key) {
+    public V get(K key) {
         CacheNode node = (CacheNode) nodes.get(key);
         if (node != null) {
             moveToHead(node);
@@ -60,7 +77,7 @@ public class LRUCache {
      * @param key
      * @param value
      */
-    public void put(Object key, Object value) {
+    public void put(K key, V value) {
         CacheNode node = (CacheNode) nodes.get(key);
 
         if (node == null) {
@@ -88,7 +105,7 @@ public class LRUCache {
      * @param key
      * @return
      */
-    public Object remove(Object key) {
+    public V remove(K key) {
         CacheNode node = (CacheNode) nodes.get(key);
         if (node != null) {
             if (node.prev != null) {
@@ -102,7 +119,7 @@ public class LRUCache {
             if (first == node)
                 first = node.next;
         }
-        return node;
+        return node.value;
     }
 
     public void clear() {
@@ -149,16 +166,10 @@ public class LRUCache {
             last = first;
     }
 
-    private int cacheSize;
-    private HashMap nodes;//缓存容器
-    private int currentSize;
-    private CacheNode first;//链表头
-    private CacheNode last;//链表尾
-
 
     public static void main(String[] args) {
 
-        LRUCache cache = new LRUCache(5);
+        MyLRUCache<String, String> cache = new MyLRUCache(5);
         cache.put("a", "1");
         cache.put("b", "2");
         cache.put("c", "3");

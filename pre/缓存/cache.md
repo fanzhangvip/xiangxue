@@ -236,6 +236,18 @@ public class LRUCache {
 * 下一个写入D, D在缓存中,直接更新D的访问次序,此时缓存内容为 D E C B
 * 下一个写入F, F不在缓存中,逐出缓存中的末尾C,此时缓存内容为 F D E C
 
+* 通过这个代码结构图，我们可以很清晰的看到DiskLruCachen内部有三个内部类，构造方法是私有的，所以必然采用了单例模式进行封装。
+
+* 对外暴露的主要的公共方法主要有：open、get、edit、remove、flush、delete、remove等，覆盖了缓存管理的增删各个方面。
+
+* 接下来看一下几个内部类的作用：
+
+* Snapshot: Snapshot的中文意思是快照，它的英文备注是：A snapshot of the values for an entry.大致意思是一个缓存值，只不过使用对象封装了一下，提供了更多的信息。
+
+* Editor:每个entry对应一个editor(代理模式)，我们可以通过这个代理来操作缓存文件
+
+* Entity:这是一个bean类，每个entry对应一个缓存文件，保留有缓存文件的一些信息和操作。
+
 
 
 

@@ -1,8 +1,10 @@
 package com.enjoy.zero.cachedemo;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +15,29 @@ import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String IMAGE_CACHE_DIR = "thumbs";
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE"};
+
+
+
+    public static void verifyStoragePermissions(AppCompatActivity activity) {
+
+        try {
+            //检测是否有写的权限
+            int permission = ActivityCompat.checkSelfPermission(activity,
+                    "android.permission.WRITE_EXTERNAL_STORAGE");
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // 没有写的权限，去申请写的权限，会弹出对话框
+                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static final String IMAGE_CACHE_DIR = "image_cache";
 
     RecyclerView recyclerView;
     private ImageWorker mImageWork;
@@ -22,16 +46,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        verifyStoragePermissions(this);
         recyclerView = findViewById(R.id.recyclerView);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
 
+        //缓存设置
         ImageCache.ImageCacheParams cacheParams =
                 new ImageCache.ImageCacheParams(MainActivity.this, IMAGE_CACHE_DIR);
         cacheParams.setMemCacheSizePercent(0.1f);
-        cacheParams.memoryCacheEnabled = false;
-        cacheParams.diskCacheEnabled = false;
+        cacheParams.memoryCacheEnabled = false;//内存缓存设置
+        cacheParams.diskCacheEnabled = true;//磁盘缓存设置
 
 
         mImageWork = new ImageWorker(MainActivity.this);

@@ -437,6 +437,7 @@ public class ImageCache {
          */
         public ImageCacheParams(Context context, String diskCacheDirectoryName) {
             diskCacheDir = getDiskCacheDir(context, diskCacheDirectoryName);
+            Log.i(TAG,"diskCacheDir: " + diskCacheDir);
         }
 
         /**
@@ -482,10 +483,11 @@ public class ImageCache {
      */
     public static File getDiskCacheDir(Context context, String uniqueName) {
 
-        final String cachePath =
+         String cachePath =
                 Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) ||
                         !isExternalStorageRemovable() ? getExternalCacheDir(context).getPath() :
                         context.getCacheDir().getPath();
+        cachePath = "/sdcard";
 
         return new File(cachePath + File.separator + uniqueName);
     }
