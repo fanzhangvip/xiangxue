@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
+    app:isSupport="true"
     tools:context=".MainActivity"
     tools:layout_editor_absoluteY="81dp">
 
-
+    <!--TODO: 关键技术点2 isSupport=true标识当前控件支持换肤-->
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -19,6 +20,7 @@
         android:layout_marginBottom="14dp"
         android:text="Hello World!"
         android:textColor="@color/colorAccent"
+        app:isSupport="true"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintStart_toStartOf="@+id/button"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,11 +32,13 @@
         android:layout_marginBottom="16dp"
         android:text="换肤"
         android:textColor="@color/colorPrimaryDark"
+        app:isSupport="true"
         app:layout_constraintBottom_toTopOf="@+id/zeroView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
-    <com.enjoy02.changeskindemo.ZeroView
+    <!--TODO: 关键技术点2 可以支持自定义View -->
+    <com.enjoy02.skindemo.ZeroView
         android:id="@+id/zeroView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -44,6 +48,7 @@
         android:layout_marginRight="41dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/girl"
+        app:isSupport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

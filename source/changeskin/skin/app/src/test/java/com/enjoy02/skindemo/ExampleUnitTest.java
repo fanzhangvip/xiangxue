@@ -1,4 +1,4 @@
-package com.enjoy02.skin;
+package com.enjoy02.skindemo;
 
 import org.junit.Test;
 

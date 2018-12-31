@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -14,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.Button;
-import android.widget.TextView;
 
 import java.io.File;
 
@@ -26,12 +24,6 @@ import java.io.File;
 * TODO: 咨询伊娜老师QQ 2133576719
 */
 public class MainActivity extends AppCompatActivity {
-
-    ConstraintLayout rootview;
-    ZeroView zeroView;
-
-    TextView textView;
-    Button button;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -61,85 +53,42 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
 //        LayoutInflater.from(this).setFactory2(new LayoutInflater.Factory2() {
-//////            @Override
-//////            public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-//////
-//////                Log.i("Zero","name: " + name);
-//////
-//////                if(TextUtils.equals(name,"TextView")){
-//////                    Button button = new Button(MainActivity.this);
-//////                    button.setText("我是被替换的TextView");
-//////                    return  button;
-//////                }
-//////
-//////                return null;
-//////            }
-//////
-//////            @Override
-//////            public View onCreateView(String name, Context context, AttributeSet attrs) {
-//////                return null;
-//////            }
-//////        });
+//            @Override
+//            public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+//
+//                Log.i("Zero","name: " + name);
+//
+//                if(TextUtils.equals(name,"TextView")){
+//                    Button button = new Button(MainActivity.this);
+//                    button.setText("我是被替换的TextView");
+//                    return  button;
+//                }
+//
+//                return null;
+//            }
+//
+//            @Override
+//            public View onCreateView(String name, Context context, AttributeSet attrs) {
+//                return null;
+//            }
+//        });
 
         // TODO: 关键点1：hook系统创建view的过程
-        mSkinFactory = new SkinFactory();
-        mSkinFactory.setDelegate(getDelegate());
-        LayoutInflater.from(this).setFactory2(mSkinFactory);
+//        mSkinFactory = new SkinFactory();
+//        mSkinFactory.setDelegate(getDelegate());
+//        LayoutInflater.from(this).setFactory2(mSkinFactory);
         super.onCreate(savedInstanceState);
         //setFactory进去
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
-
-         rootview = findViewById(R.id.rootview);
-         zeroView = findViewById(R.id.zeroView);
-
-         textView = findViewById(R.id.textView);
-//         button = findViewById(R.id.button);
-//
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                changeSkin01();
-//            }
-//        });
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeSkin();
+            }
+        });
 
     }
-
-    public void changeSkin01(){
-        rootview.setBackgroundResource(R.drawable.bg1);
-        zeroView.setBackgroundResource(R.drawable.girl1);
-        textView.setTextColor(getResources().getColor(R.color.textview));
-        button.setTextColor(getResources().getColor(R.color.button));
-//        getResources().getDrawable()
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void changeSkin() {
         File skinFile = new File(Environment.getExternalStorageDirectory(), "skin.apk");

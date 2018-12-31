@@ -1,4 +1,4 @@
-package com.enjoy02.skin;
+package com.enjoy02.skindemo;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.enjoy02.skin", appContext.getPackageName());
+        assertEquals("com.enjoy02.skindemo", appContext.getPackageName());
     }
 }
