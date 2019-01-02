@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         //缓存设置
         ImageCache.ImageCacheParams cacheParams =
                 new ImageCache.ImageCacheParams(MainActivity.this, IMAGE_CACHE_DIR);
-        cacheParams.setMemCacheSizePercent(0.1f);
-        cacheParams.memoryCacheEnabled = false;//内存缓存设置
+        cacheParams.setMemCacheSizePercent(0.01f);
+        cacheParams.memoryCacheEnabled = true;//内存缓存设置
         cacheParams.diskCacheEnabled = true;//磁盘缓存设置
 
 

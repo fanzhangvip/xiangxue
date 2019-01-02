@@ -161,12 +161,12 @@ public final class DiskLruCache implements Closeable {
      * it exists when the cache is opened.
      */
 
-    private final File directory;
+    private final File directory;//缓存的路径
     private final File journalFile;
     private final File journalFileTmp;
-    private final int appVersion;
-    private final long maxSize;
-    private final int valueCount;
+    private final int appVersion;//版本号，用于给 Journal 文件判断缓存是否有效
+    private final long maxSize;//缓存的最大值，当超过时依照 LRU 策略移除超出的部分
+    private final int valueCount;//每个 key 对应 Entry的数量
     private long size = 0;
     private Writer journalWriter;
     private final LinkedHashMap<String, Entry> lruEntries
@@ -307,6 +307,7 @@ public final class DiskLruCache implements Closeable {
 
     /**
      * 打开一个缓存目录，如果没有则首先创建它
+     * 检查是否已经存在 Journal 文件，若存在就根据 Journal 文件初始化 LinkedHashMap，若不存在则新建一个
      *
      * @param directory 指定数据缓存地址
      * @param appVersion APP版本号，当版本号改变时，缓存数据会被清除

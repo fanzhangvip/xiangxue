@@ -40,7 +40,7 @@ public class MyLRUCache<K, V> {
         return "MyLRUCache{" +
                 "cacheSize=" + cacheSize +
                 ", currentSize=" + currentSize +
-                ", " + getKV() +
+                ", " + getKVLinkList() +
                 '}';
     }
 
@@ -54,6 +54,22 @@ public class MyLRUCache<K, V> {
         sb.append("} ");
         return sb.toString();
     }
+
+    public String getKVLinkList() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("{ ");
+        CacheNode temp = first;
+        while(temp != last){
+            sb.append(temp.key).append(": ").append(temp.value).append(", ");
+            temp = temp.next;
+        }
+        sb.append(last.key).append(": ").append(last.value).append(", ");
+        sb.deleteCharAt(sb.lastIndexOf(", "));
+        sb.append("} ");
+        return sb.toString();
+    }
+
+
 
     /**
      * 获取缓存中对象
@@ -179,6 +195,10 @@ public class MyLRUCache<K, V> {
         cache.put("x", "6");
         System.out.println("cache: " + cache);
         cache.put("b", "7");
+        System.out.println("cache: " + cache);
+        cache.put("y", "8");
+        System.out.println("cache: " + cache);
+        cache.put("d", "9");
         System.out.println("cache: " + cache);
 
     }
