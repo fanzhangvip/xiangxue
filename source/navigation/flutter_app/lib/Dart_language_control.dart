@@ -132,15 +132,36 @@ main() {
   ///异常 在Dart中可以抛出非空对象（不仅仅是Exception或Error）作为异常
   ///你可以抛出多个类型的Exception，但是由第一个catch到的分句来处理
   ///如果catch分句没有指定类型，那么它可以处理任何类型的异常
+  ///与Java不同，Dart的所有异常都是未经检查的异常。方法不声明它们可能抛出哪些异常，也不要求你捕捉任何异常
+  ///你可以使用on或catch，或者两者都使用。需要指定异常类型时使用on。当需要处理异常对象时，使用catch
+  ///要部分处理异常，同时允许它传播，请使用rethrow关键字
+  /// 异常处理 规则
+  /// 避免无on子句的捕获。
+  /// 不要在没有on子句的情况下丢弃捕获的错误。
+  /// 抛出只针对编程错误实现Error的对象。
+  /// 不要显式地捕捉Error或实现Error的类型。
+  ///一定要使用rethrow来重新抛出一个捕获的异常。
+  ///
 //  throw new Exception('值必须大于0');
 //  throw "值必须大于0呀";
 
-  try {
+  try{
     throw 'This a Exception!';
-  } on Exception catch (e) {
-    print('Unknown exception: $e');
+  }catch (e){
+    print('Unknown type: $e');
+  }
+
+  try {
+    final k = 1~/0;
+  } on IntegerDivisionByZeroException{///1. 需要指定异常类型时使用on
+    print('Unknown exception:');
+  } on Exception catch( e,s){///2. 当需要处理异常对象时，使用catch,e表示异常，s表示调用堆栈
+    print("e=$e,\n 调用堆栈: s=$s");
   } catch (e) {
     print('Unknown type: $e');
+    rethrow;///3. 要部分处理异常，同时允许它传播，请使用rethrow关键字
+  }finally{
+    print("finally block");
   }
 
   ///无论是否发生异常，为了使某些代码得以运行，可以使用finally语句

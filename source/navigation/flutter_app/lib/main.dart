@@ -75,6 +75,8 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildRow(WordPair pair) {
+
+
     final alreadySaved = _saved.contains(pair);
     return new ListTile(
       title: new Text(

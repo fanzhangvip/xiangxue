@@ -21,6 +21,14 @@ class S implements WidgetsLocalizations {
 
 }
 
+class $aa extends S {
+  const $aa();
+
+  @override
+  TextDirection get textDirection => TextDirection.ltr;
+
+}
+
 class $en extends S {
   const $en();
 }
@@ -30,6 +38,7 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
+      Locale("aa", ""),
       Locale("en", ""),
     ];
   }
@@ -71,6 +80,8 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
     final String lang = getLang(locale);
     if (lang != null) {
       switch (lang) {
+        case "aa":
+          return SynchronousFuture<S>(const $aa());
         case "en":
           return SynchronousFuture<S>(const $en());
         default:

@@ -12,15 +12,15 @@ github token e40cff925e7717ea17b9c4a6b0daf8b525d12713
 5，互动答疑。
 
 
-今日课题：Android高级必备秘密武器-Navigation
-上课时间：2018/12/30 20:00
+今日课题：Android架构组件剖析-Navigation
+上课时间：2019/01/09 15:00
 授课讲师：Zero老师[享学课堂]
 课程链接：
 课程内容：
-1，Fragment这样使用有什么问题？
+1，app架构演进
 2，五步实现Navigation的使用
 3，站在设计者的角度理解Navigation
-4，jetPack简介
+4，jetPack应用场景
 5，互动答疑。
 
 
