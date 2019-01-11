@@ -49,20 +49,6 @@ public class JavapoetTest {
 //        testInnerClasses();
 //        testInterfacess();
 
-        int value = 333;
-        TypeSpec typeSpec = TypeSpec
-                .classBuilder("MySimpleAptName")
-                .addModifiers(Modifier.PUBLIC)
-                .addMethod(newMyMethod(value))
-                .build();
-
-        // Write file
-        try {
-            JavaFile javaFile = JavaFile.builder("com.example.dongrongfu.mytestapt", typeSpec).build();
-            javaFile.writeTo(System.out);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private static MethodSpec newMyMethod(int value) {

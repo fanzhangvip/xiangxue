@@ -25,6 +25,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         MyButterknife.bind(this);
         mTextView.setText("hahahahahah.....");
+
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
     }
 
     @Override
