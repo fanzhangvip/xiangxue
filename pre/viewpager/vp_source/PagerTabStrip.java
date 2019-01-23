@@ -45,6 +45,11 @@ import androidx.core.content.ContextCompat;
  *
  * <p>For a non-interactive indicator, see {@link PagerTitleStrip}.</p>
  */
+/**
+* PagerTabStrip是ViewPager的一个关于当前页面、上一个页面和下一个页面的一个可交互的指示器。它经常作为ViewPager控件的一个子控件被被添加在XML布局文件中。
+* 在你的布局文件中，将它作为子控件添加在ViewPager中。而且要将它的 android:layout_gravity 属性设置为TOP或BOTTOM来将它显示在ViewPager的顶部或底部。
+* 每个页面的标题是通过适配器的getPageTitle(int)函数提供给ViewPager的。
+*/
 public class PagerTabStrip extends PagerTitleStrip {
     private static final String TAG = "PagerTabStrip";
 

@@ -502,3 +502,40 @@ onLayout的分析也到此结束了，至于onDraw方法ViewPager并没有做什
 当然，ViewPager的代码还不止这些，此文分析的仅仅是它的骨架，还有许多其他处理如onInterceptTouchEvent方法，pageScrolled方法等等，这些就留给读者自己去分析吧。
 理解了这边文章之后，对ViewPager的工作原理也有一定程度的了解了，相信再去读那些代码难度不会很大。
 至于篇头提到的三个问题，相信各位也已经有了答案。
+
+### PagerAdapter
+Class Overview
+提供一个适配器用于填充ViewPager页面. 你很可能想要使用一个更加具体的实现, 例如： FragmentPagerAdapter or FragmentStatePagerAdapter.
+
+当你实现一个PagerAdapter时，至少需要覆盖以下几个方法:
+
+instantiateItem(ViewGroup, int)
+destroyItem(ViewGroup, int, Object)
+getCount()
+isViewFromObject(View, Object)
+PagerAdapter比AdapterView的使用更加普通.ViewPager使用回调函数来表示一个更新的步骤，而不是使用一个视图回收机制。在需要的时候pageradapter也可以实现视图的回收或者使用一种更为巧妙的方法来管理视图，比如采用可以管理自身视图的fragment。
+
+viewpager不直接处理每一个视图而是将各个视图与一个键联系起来。这个键用来跟踪且唯一代表一个页面，不仅如此，该键还独立于这个页面所在adapter的位置。当pageradapter将要改变的时候他会调用startUpdate函数，接下来会调用一次或多次的instantiateItem或者destroyItem。最后在更新的后期会调用finishUpdate。当finishUpdate返回时 instantiateItem返回的对象应该添加到父ViewGroup destroyItem返回的对象应该被ViewGroup删除。methodisViewFromObject(View, Object)代表了当前的页面是否与给定的键相关联。
+ 
+对于非常简单的pageradapter或许你可以选择用page本身作为键，在创建并且添加到viewgroup后instantiateItem方法里返回该page本身即可
+destroyItem将会将该page从viewgroup里面移除。isViewFromObject方法里面直接可以返回view == object。
+ 
+pageradapter支持数据集合的改变，数据集合的改变必须要在主线程里面执行，然后还要调用notifyDataSetChanged方法。和baseadapter非常相似。数据集合的改变包括页面的添加删除和修改位置。viewpager要维持当前页面是活动的，所以你必须提供getItemPosition方法。
+
+3、解析
+看上面的翻译，与我们相关只有这两段话：
+
+viewpager不直接处理每一个视图而是将各个视图与一个键联系起来。这个键用来跟踪且唯一代表一个页面，不仅如此，该键还独立于这个页面所在adapter的位置。当pageradapter将要改变的时候他会调用startUpdate函数，接下来会调用一次或多次的instantiateItem或者destroyItem。最后在更新的后期会调用finishUpdate。当finishUpdate返回时 instantiateItem返回的对象应该添加到父ViewGroup destroyItem返回的对象应该被ViewGroup删除。methodisViewFromObject(View, Object)代表了当前的页面是否与给定的键相关联。
+
+对于非常简单的pageradapter或许你可以选择用page本身作为键，在创建并且添加到viewgroup后instantiateItem方法里返回该page本身即可destroyItem将会将该page从viewgroup里面移除。isViewFromObject方法里面直接可以返回view == object。
+
+对于上面两段话，我这里有两点要着重讲一下：
+
+1、第一段说明了，键（Key）的概念，首先这里要清楚的一点是，每个滑动页面都对应一个Key，而且这个Key值是用来唯一追踪这个页面的，也就是说每个滑动页面都与一个唯一的Key一一对应。大家先有这个概念就好，关于这个Key是怎么来的，下面再讲。
+
+2、第二段简单讲了一个应用，即将当前页面本身的View作为Key。其实这个应用就是我们前一章讲的例子应用。不太理解？没关系，下面细讲。下面我们讲讲Key的问题
+
+4、关于Key
+现在我带着大家看看几个方法的官方文档：(这里结合《ViewPager 详解（一）---基本入门》最底部的例子来看)
+
+http://hukai.me/android-training-course-in-chinese/ui/custom-view/custom-draw.html

@@ -14,67 +14,35 @@
  * limitations under the License.
  */
 
-package androidx.fragment.app;
+package com.enjoy.zero.viewpagerdemo.adapter;
 
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.viewpager.widget.PagerAdapter;
+
 
 /**
- * Implementation of {@link PagerAdapter} that
- * represents each page as a {@link Fragment} that is persistently
- * kept in the fragment manager as long as the user can return to the page.
- *
- * <p>This version of the pager is best for use when there are a handful of
- * typically more static fragments to be paged through, such as a set of tabs.
- * The fragment of each page the user visits will be kept in memory, though its
- * view hierarchy may be destroyed when not visible.  This can result in using
- * a significant amount of memory since fragment instances can hold on to an
- * arbitrary amount of state.  For larger sets of pages, consider
- * {@link FragmentStatePagerAdapter}.
- *
- * <p>When using FragmentPagerAdapter the host ViewPager must have a
- * valid ID set.</p>
- *
- * <p>Subclasses only need to implement {@link #getItem(int)}
- * and {@link #getCount()} to have a working adapter.
- *
- * <p>Here is an example implementation of a pager containing fragments of
- * lists:
- *
- * {@sample frameworks/support/samples/Support4Demos/src/main/java/com/example/android/supportv4/app/FragmentPagerSupport.java
- *      complete}
- *
- * <p>The <code>R.layout.fragment_pager</code> resource of the top-level fragment is:
- *
- * {@sample frameworks/support/samples/Support4Demos/src/main/res/layout/fragment_pager.xml
- *      complete}
- *
- * <p>The <code>R.layout.fragment_pager_list</code> resource containing each
- * individual fragment's layout is:
- *
- * {@sample frameworks/support/samples/Support4Demos/src/main/res/layout/fragment_pager_list.xml
- *      complete}
+ * FragmentPagerAdapter派生自PagerAdapter，它是用来呈现Fragment页面的，这些Fragment页面会一直保存在fragment manager中，以便用户可以随时取用。
+ * 这个适配器最好用于有限个静态fragment页面的管理。尽管不可见的视图有时会被销毁，
+ * 但用户所有访问过的fragment都会被保存在内存中。因此fragment实例会保存大量的各种状态，这就造成了很大的内存开销。所以如果要处理大量的页面切换，建议使用FragmentStatePagerAdapter.
+ * 每一个使用FragmentPagerAdapter的ViewPager都要有一个有效的ID集合{@link #makeFragmentName(int, long)}，有效ID的集合就是Fragment的集合
+ * 对于FragmentPagerAdapter的派生类，只需要重写getItem(int)和getCount()就可以了
  */
-/**
-* FragmentPagerAdapter派生自PagerAdapter，它是用来呈现Fragment页面的，这些Fragment页面会一直保存在fragment manager中，以便用户可以随时取用。
-* 这个适配器最好用于有限个静态fragment页面的管理。尽管不可见的视图有时会被销毁，
-* 但用户所有访问过的fragment都会被保存在内存中。因此fragment实例会保存大量的各种状态，这就造成了很大的内存开销。所以如果要处理大量的页面切换，建议使用FragmentStatePagerAdapter.
-* 每一个使用FragmentPagerAdapter的ViewPager都要有一个有效的ID集合{@link #makeFragmentName(int, long)}，有效ID的集合就是Fragment的集合
-* 对于FragmentPagerAdapter的派生类，只需要重写getItem(int)和getCount()就可以了
-*/
-public abstract class FragmentPagerAdapter extends PagerAdapter {
-    private static final String TAG = "FragmentPagerAdapter";
+public abstract class MyFragmentPagerAdapter extends PagerAdapter {
+    private static final String TAG = "MyFragmentPagerAdapter";
     private static final boolean DEBUG = false;
 
     private final FragmentManager mFragmentManager;
     private FragmentTransaction mCurTransaction = null;
     private Fragment mCurrentPrimaryItem = null;
 
-    public FragmentPagerAdapter(FragmentManager fm) {
+    public MyFragmentPagerAdapter(FragmentManager fm) {
         mFragmentManager = fm;
     }
 
@@ -94,6 +62,7 @@ public abstract class FragmentPagerAdapter extends PagerAdapter {
     @SuppressWarnings("ReferenceEquality")
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+//        Log.i("Zero","position: " + position);
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
@@ -126,14 +95,14 @@ public abstract class FragmentPagerAdapter extends PagerAdapter {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
         if (DEBUG) Log.v(TAG, "Detaching item #" + getItemId(position) + ": f=" + object
-                + " v=" + ((Fragment)object).getView());
-        mCurTransaction.detach((Fragment)object);
+                + " v=" + ((Fragment) object).getView());
+        mCurTransaction.detach((Fragment) object);
     }
 
     @SuppressWarnings("ReferenceEquality")
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        Fragment fragment = (Fragment)object;
+        Fragment fragment = (Fragment) object;
         if (fragment != mCurrentPrimaryItem) {
             if (mCurrentPrimaryItem != null) {
                 mCurrentPrimaryItem.setMenuVisibility(false);
@@ -157,7 +126,7 @@ public abstract class FragmentPagerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return ((Fragment)object).getView() == view;
+        return ((Fragment) object).getView() == view;
     }
 
     @Override
@@ -169,20 +138,13 @@ public abstract class FragmentPagerAdapter extends PagerAdapter {
     public void restoreState(Parcelable state, ClassLoader loader) {
     }
 
-    /**
-     * Return a unique identifier for the item at the given position.
-     *
-     * <p>The default implementation returns the given position.
-     * Subclasses should override this method if the positions of items can change.</p>
-     *
-     * @param position Position within this adapter
-     * @return Unique identifier for the item at position
-     */
+
     public long getItemId(int position) {
         return position;
     }
 
     private static String makeFragmentName(int viewId, long id) {
+//        Log.i("Zero", "makeFragmentName viewId: " + viewId + ", id: " + id);
         return "android:switcher:" + viewId + ":" + id;
     }
 }
