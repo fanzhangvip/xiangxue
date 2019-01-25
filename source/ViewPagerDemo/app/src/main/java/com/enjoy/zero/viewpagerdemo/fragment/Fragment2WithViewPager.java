@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.enjoy.zero.viewpagerdemo.R;
-import com.enjoy.zero.viewpagerdemo.adapter.MyFragmentPagerAdapter;
 
 import java.util.ArrayList;
 
@@ -48,7 +47,6 @@ public class Fragment2WithViewPager extends BaseFragment {
         fragmentsList.add(Fragment2_vp_2.newIntance());
         fragmentsList.add(Fragment2_vp_3.newIntance());
         fragmentsList.add(Fragment2_vp_4.newIntance());
-        //https://juejin.im/post/5adcb0e36fb9a07aa7673fbc
 
         /**
          * 实例化一个PagerAdapter

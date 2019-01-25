@@ -22,7 +22,7 @@ public class FragmentDelegater extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        dumpLifeCycle("onAttach: " + mFragment.hashCode());
+//        dumpLifeCycle("onAttach: " + mFragment.hashCode());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class FragmentDelegater extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        dumpLifeCycle("onActivityCreated");
+//        dumpLifeCycle("onActivityCreated");
     }
 
     @Override
@@ -90,13 +90,13 @@ public class FragmentDelegater extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        dumpLifeCycle("onDestroy");
+//        dumpLifeCycle("onDestroy");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        dumpLifeCycle("onDetach");
+//        dumpLifeCycle("onDetach");
     }
 
     @SuppressLint("ValidFragment")

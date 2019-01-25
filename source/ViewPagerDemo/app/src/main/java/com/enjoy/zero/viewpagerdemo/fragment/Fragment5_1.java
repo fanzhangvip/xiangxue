@@ -11,12 +11,11 @@ import android.view.ViewGroup;
 import com.enjoy.zero.viewpagerdemo.R;
 
 
-public class Fragment2_vp_1 extends BaseFragment {
-
+public class Fragment5_1 extends BaseFragment {
 
 
     public static Fragment newIntance() {
-        Fragment2_vp_1 fragment = new Fragment2_vp_1();
+        Fragment5_1 fragment = new Fragment5_1();
         fragment.setFragmentDelegater(new FragmentDelegater(fragment));
         return fragment;
     }
@@ -25,13 +24,13 @@ public class Fragment2_vp_1 extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_vp_1, container, false);
+        return inflater.inflate(R.layout.fragment_5_1, container, false);
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
 

@@ -79,6 +79,19 @@ github token e40cff925e7717ea17b9c4a6b0daf8b525d12713
 
 
 
+今日课题：ViewPager优化
+上课时间：2019/01/25 20:00
+授课讲师：Zero老师[享学课堂]
+课程链接：
+课程内容：
+1，ViewPager基础用法总结
+2，ViewPager禁止预加载探索
+3，ViewPager内存优化
+4，ViewPager+Fragment懒加载优化
+5，互动答疑。
+
+
+
 
 
 
