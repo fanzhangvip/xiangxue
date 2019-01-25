@@ -35,8 +35,7 @@ public class MainFragment extends ListFragment {
                 "ViewPager预加载",//6
                 "ViewPager禁止预加载",//7
                 "ViewPager禁止预加载优化",//8
-                "ViewPager懒加载",//9
-                "ViewPager懒加载优化"//10
+                "ViewPager懒加载"
         };
         arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, array);
         setListAdapter(arrayAdapter);
@@ -87,10 +86,6 @@ public class MainFragment extends ListFragment {
                 startActivity(gotoAct);
                 break;
             case 9://ViewPager懒加载
-                gotoAct = new Intent(getActivity(), ViewPager10Activity.class);
-                startActivity(gotoAct);
-                break;
-            case 10://ViewPager懒加载优化
                 gotoAct = new Intent(getActivity(), ViewPager10Activity.class);
                 startActivity(gotoAct);
                 break;

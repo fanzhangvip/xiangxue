@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.enjoy.zero.viewpagerdemo.R;
 
 
-public class Fragment5_1 extends BaseFragment {
+public class Fragment5_1 extends MiddleFragment {
 
 
     public static Fragment newIntance() {

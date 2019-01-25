@@ -13,7 +13,7 @@ import android.widget.Button;
 import com.enjoy.zero.viewpagerdemo.R;
 
 
-public class Fragment5 extends BaseFragment {
+public class Fragment5 extends MiddleFragment {
 
     private Button mReplace;
     private Button mHideShow;

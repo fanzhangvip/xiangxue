@@ -12,7 +12,7 @@ import com.enjoy.zero.viewpagerdemo.R;
 
 
 
-public class Fragment3 extends BaseFragment {
+public class Fragment3 extends MiddleFragment {
 
 
     public static Fragment newIntance() {

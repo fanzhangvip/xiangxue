@@ -16,7 +16,7 @@ import com.enjoy.zero.viewpagerdemo.R;
 import java.util.ArrayList;
 
 
-public class Fragment2WithViewPager extends BaseFragment {
+public class Fragment2WithViewPager extends MiddleFragment {
 
     private ViewPager viewPager;  //对应的viewPager
     private ArrayList<Fragment> fragmentsList;//view数组
