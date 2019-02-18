@@ -62,16 +62,17 @@ class DeltaLogVerifyAnswer extends DeltaAnswer
 main(){
   Answer();
 
-  printAnswer(Answer(), 'Use `with` to include a mixin');
-
-  printAnswer(
-  LogAnswer(),
-  'Include many mixins by separating with commas. '
-  '`$LoggingAnswerMixin` prints every time `answer` is accessed.');
-
-  printAnswer(LogVerifyAnswer(), 'In this case, log then verify.');
-  printAnswer(VerifyLogAnswer(), 'In this case, verify then log.');
-
-  printAnswer(DeltaLogVerifyAnswer(), 'Verify will fail.');
-  printAnswer(DeltaLogVerifyAnswer(1), 'Verify will succeed.');
+//  printAnswer(Answer(), 'Use `with` to include a mixin');
+//
+//  printAnswer(
+//  LogAnswer(),
+//  'Include many mixins by separating with commas. '
+//  '`$LoggingAnswerMixin` prints every time `answer` is accessed.');
+//
+//  printAnswer(LogVerifyAnswer(), 'In this case, log then verify.');
+//  printAnswer(VerifyLogAnswer(), 'In this case, verify then log.');
+//
+//  printAnswer(DeltaLogVerifyAnswer(), 'Verify will fail.');
+//  printAnswer(DeltaLogVerifyAnswer(1), 'Verify will succeed.');
+print("VerifyLogAnswer ${VerifyLogAnswer is AnswerMixin}");
 }

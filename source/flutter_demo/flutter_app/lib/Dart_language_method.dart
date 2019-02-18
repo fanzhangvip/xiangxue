@@ -20,6 +20,7 @@ var sayHello3 = (name) =>  'Hello $name!';
 
 ///函数别名
 typedef int Add(int a,int b);
+
 int Substract(int a,int b) => a - b;
 
 //函数闭包

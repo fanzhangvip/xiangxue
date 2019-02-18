@@ -121,7 +121,7 @@ class Anim{
   String type = "Anim";
 }
 
-class Student implements Person,Action,Anim{
+class Student with MixinClass implements Person,Action,Anim {
   String name;
   Student(this.name);
 
@@ -140,6 +140,12 @@ class Student implements Person,Action,Anim{
 
 }
 
+class MixinClass{
+  String greet(who) {
+    return ' with class ${who}';
+  }
+}
+
 class Teacher extends Anim implements Person{
   String name;
   Teacher(this.name);
@@ -155,27 +161,29 @@ class Teacher extends Anim implements Person{
 }
 
 void main() {
-  var point = new Point(1, 2, 3);
-  print(point.hashCode); //未定义父类的时候，默认继承自Object
-
-  var p2 = Point.fromeList([1, 2, 3]);
-  print(p2);
-
-  var rect = Rectangle(3, 4, 20, 15);
-  assert(rect.left == 3);
-  rect.right = 12;
-  assert(rect.left == -8);
-
-  var logger = Logger("UI");
-  logger.log("Button clicked");
-
-  Person p3 = new Student('Wang');
-  Person p4 = Teacher('Lee');
+//  var point = new Point(1, 2, 3);
+//  print(point.hashCode); //未定义父类的时候，默认继承自Object
+//
+//  var p2 = Point.fromeList([1, 2, 3]);
+//  print(p2);
+//
+//  var rect = Rectangle(3, 4, 20, 15);
+//  assert(rect.left == 3);
+//  rect.right = 12;
+//  assert(rect.left == -8);
+//
+//  var logger = Logger("UI");
+//  logger.log("Button clicked");
+//
+//  Person p3 = new Student('Wang');
+//  Person p4 = Teacher('Lee');
 
   Student s1 = Student("Fan");
-  var t1 = Teacher("Zheng");
-  print(p3.greet("Chen"));
-  print(p4.greet('Chen'));
+//  var t1 = Teacher("Zheng");
+//  print(p3.greet("Chen"));
+//  print(p4.greet('Chen'));
   print(s1.greet('Chen'));
-  print(t1.greet('Chen'));
+//  print(t1.greet('Chen'));
+
+  print( "s1 is Person ${Student is Person}, s1 is MixinClass ${Student is MixinClass}");
 }
