@@ -22,20 +22,20 @@ public class FragmentDelegater extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        dumpLifeCycle("onAttach: " + mFragment.hashCode());
+        dumpLifeCycle("onAttach: " + mFragment.hashCode());
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        dumpLifeCycle("onCreate");
+        dumpLifeCycle("onCreate");
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-//        dumpLifeCycle("onCreateView");
+        dumpLifeCycle("onCreateView");
         return null;
     }
 
@@ -48,7 +48,7 @@ public class FragmentDelegater extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        dumpLifeCycle("onActivityCreated");
+        dumpLifeCycle("onActivityCreated");
     }
 
     @Override
@@ -60,7 +60,7 @@ public class FragmentDelegater extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-//        dumpLifeCycle("onStart");
+        dumpLifeCycle("onStart");
     }
 
     @Override
@@ -78,7 +78,7 @@ public class FragmentDelegater extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-//        dumpLifeCycle("onStop");
+        dumpLifeCycle("onStop");
     }
 
     @Override
@@ -90,13 +90,13 @@ public class FragmentDelegater extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        dumpLifeCycle("onDestroy");
+        dumpLifeCycle("onDestroy");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        dumpLifeCycle("onDetach");
+        dumpLifeCycle("onDetach");
     }
 
     @SuppressLint("ValidFragment")

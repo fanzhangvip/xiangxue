@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.enjoy.zero.viewpagerdemo.adapter.CustomPageTabStripAdapter;
+
 import java.util.ArrayList;
 
 public class ViewPager03Activity extends AppCompatActivity {
@@ -98,10 +100,10 @@ public class ViewPager03Activity extends AppCompatActivity {
         };
 
         // TODO:3. PageView的适配器
-        viewPager.setAdapter(pagerAdapter);
+//        viewPager.setAdapter(pagerAdapter);
 
-//        CustomPageTabStripAdapter adapter = new CustomPageTabStripAdapter(this,viewList, titleList);
-//        viewPager.setAdapter(adapter);
+        CustomPageTabStripAdapter adapter = new CustomPageTabStripAdapter(this,viewList, titleList);
+        viewPager.setAdapter(adapter);
 
     }
 }
