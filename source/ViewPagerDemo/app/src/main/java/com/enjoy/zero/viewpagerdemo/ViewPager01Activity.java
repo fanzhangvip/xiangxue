@@ -80,8 +80,8 @@ public class ViewPager01Activity extends AppCompatActivity {
 
         // TODO:3. PageView的适配器
         viewPager.setAdapter(pagerAdapter);
-//        ChangeKeyAdapter changeKeyAdapter = new ChangeKeyAdapter(viewList);
-        viewPager.setAdapter(pagerAdapter);
+        ChangeKeyAdapter changeKeyAdapter = new ChangeKeyAdapter(viewList);
+        viewPager.setAdapter(changeKeyAdapter);
 
     }
 }

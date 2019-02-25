@@ -45,7 +45,8 @@
         tools:layout="@layout/fragment_12">
         <action
             android:id="@+id/action_oneFragment2_to_oneFragment3"
-            app:destination="@id/oneFragment3" />
+            app:destination="@id/oneFragment3"
+            app:popUpTo="@+id/oneFragment3" />
     </fragment>
     <fragment
         android:id="@+id/oneFragment3"

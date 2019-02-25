@@ -94,14 +94,14 @@ public class MainActivity extends AppCompatActivity {
          zeroView = findViewById(R.id.zeroView);
 
          textView = findViewById(R.id.textView);
-//         button = findViewById(R.id.button);
+         button = findViewById(R.id.button);
 //
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                changeSkin01();
-//            }
-//        });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeSkin01();
+            }
+        });
 
     }
 
