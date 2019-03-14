@@ -1,0 +1,1 @@
+/usr/bin/c++.exe -g  -Wl,--enable-auto-import CMakeFiles/demo.dir/CppTemplateTutorial.cpp.o CMakeFiles/demo.dir/ThreadDemo.cpp.o CMakeFiles/demo.dir/main.cpp.o  -o demo.exe -Wl,--out-implib,libdemo.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -L/usr/local/lib -lboost_thread -lboost_system 

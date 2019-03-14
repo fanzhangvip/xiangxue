@@ -61,25 +61,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
 //        LayoutInflater.from(this).setFactory2(new LayoutInflater.Factory2() {
-//////            @Override
-//////            public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-//////
-//////                Log.i("Zero","name: " + name);
-//////
-//////                if(TextUtils.equals(name,"TextView")){
-//////                    Button button = new Button(MainActivity.this);
-//////                    button.setText("我是被替换的TextView");
-//////                    return  button;
-//////                }
-//////
-//////                return null;
-//////            }
-//////
-//////            @Override
-//////            public View onCreateView(String name, Context context, AttributeSet attrs) {
-//////                return null;
-//////            }
-//////        });
+//            @Override
+//            public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+//
+//                Log.i("Zero","name: " + name);
+//
+//                if(TextUtils.equals(name,"TextView")){
+//                    Button button = new Button(MainActivity.this);
+//                    button.setText("我是被替换的TextView");
+//                    return  button;
+//                }
+//
+//                return null;
+//            }
+//
+//            @Override
+//            public View onCreateView(String name, Context context, AttributeSet attrs) {
+//                return null;
+//            }
+//        });
 
         // TODO: 关键点1：hook系统创建view的过程
         mSkinFactory = new SkinFactory();
@@ -95,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
 
          textView = findViewById(R.id.textView);
          button = findViewById(R.id.button);
-//
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeSkin01();
+                changeSkin();
             }
         });
 
@@ -112,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
         button.setTextColor(getResources().getColor(R.color.button));
 //        getResources().getDrawable()
     }
-
-
 
 
 

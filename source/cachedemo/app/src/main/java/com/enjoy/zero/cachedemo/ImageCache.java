@@ -34,6 +34,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
+import com.enjoy.zero.cachedemo.diskcache.DiskLruCache;
+
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;

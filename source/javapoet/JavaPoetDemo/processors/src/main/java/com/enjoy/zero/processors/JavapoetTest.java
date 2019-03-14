@@ -44,7 +44,7 @@ public class JavapoetTest {
 //        StringFor$STest();
 //        TypesFor$T();
 //        testNamesFor$N();
-//        testAbstractMethods();
+        testAbstractMethods();
 //        testConstructors();
 //        testInnerClasses();
 //        testInterfacess();

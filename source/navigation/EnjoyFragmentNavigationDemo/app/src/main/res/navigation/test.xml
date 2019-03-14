@@ -14,9 +14,6 @@
         <action
             android:id="@+id/action_oneFragment5_to_twoFragment"
             app:destination="@id/twoFragment" />
-        <action
-            android:id="@+id/action_oneFragment5_to_fourFragment"
-            app:destination="@id/fourFragment" />
     </fragment>
     <fragment
         android:id="@+id/twoFragment"
@@ -24,27 +21,16 @@
         android:label="fragment_2"
         tools:layout="@layout/fragment_2" >
         <action
-            android:id="@+id/action_twoFragment_to_threeFragment"
-            app:destination="@id/threeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/threeFragment"
-        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.ThreeFragment"
-        android:label="fragment_3"
-        tools:layout="@layout/fragment_3" >
+            android:id="@+id/action_twoFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
         <action
-            android:id="@+id/action_threeFragment_to_fourFragment"
-            app:destination="@id/fourFragment" />
+            android:id="@+id/action_twoFragment_to_navigation_1"
+            app:destination="@id/navigation_1" />
     </fragment>
-    <fragment
-        android:id="@+id/fourFragment"
-        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.FourFragment"
-        android:label="fragment_4"
-        tools:layout="@layout/fragment_4" />
     <activity
         android:id="@+id/mainActivity"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
-    <include app:graph="@navigation/nav_graph" />
+    <include app:graph="@navigation/navigation_1" />
 </navigation>

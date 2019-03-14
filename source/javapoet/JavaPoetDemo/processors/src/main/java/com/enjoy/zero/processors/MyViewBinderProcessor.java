@@ -185,7 +185,7 @@ public class MyViewBinderProcessor extends AbstractProcessor {
 
         for (AnnotatedClass annotatedClass : mAnnotatedClassMap.values()) {
             try {
-                System.out.println("process ->  annotatedClass: " + annotatedClass);
+                System.out.println("process ->  annotatedClass: " + annotatedClass);//id
                 annotatedClass.generateFile().writeTo(mFiler);
             } catch (IOException e) {
                 error("Generate file failed, reason: %s", e.getMessage());

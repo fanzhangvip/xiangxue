@@ -1,0 +1,4 @@
+/cygdrive/d/xiangxue/source/Cdemo/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/cygdrive/d/xiangxue/source/Cdemo/cmake-build-debug/CMakeFiles/edit_cache.dir
+/cygdrive/d/xiangxue/source/Cdemo/cmake-build-debug/CMakeFiles/demo.dir
+/cygdrive/d/xiangxue/source/Cdemo/cmake-build-debug/CMakeFiles/Cdemo.dir
