@@ -2,53 +2,47 @@ package com.zero.caslib;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.LockSupport;
 
-
 public class ZLock implements Lock {
-    //定义一个线程标志
-    //Thread thread = null;  ---1---
-    AtomicReference<Thread> owner = new AtomicReference<>(); //* ---2---
-    //获取到一把锁
-    //集合---存储正在等待的线程
-    public LinkedBlockingQueue<Thread> waiter = new LinkedBlockingQueue<>();//* ---3---
 
+
+//    Thread  thread = null;//定义一个线程 13号
+
+    AtomicReference<Thread> thech13 = new AtomicReference<>();//拿到了一个针对线程操作的原子操作类（13号）
+
+    //定义一个小板凳 等待列表
+    LinkedBlockingQueue<Thread> waiter = new LinkedBlockingQueue<>();
+
+    //加锁的方法
     @Override
     public void lock() {
-        //如果当前线程拿到了,就完了，没有拿到，则需要加入等待
-        while (!owner.compareAndSet(null, Thread.currentThread())) {  //* ---2---
-            //没拿到锁，需要等待，等待其他线程释放锁
-            waiter.add(Thread.currentThread());  //---3---
-            LockSupport.park();//等待，让你线程等待(等待的意思就是没有没唤醒一直会卡在这里) //---3---
-            waiter.remove(Thread.currentThread());//如果能执行到这里，证明被唤醒了，所以就需要从等待列表中删除//---3---
-        }
-        /* ---1---
-        if(thread ==null){//锁没有人拿
-            thread = Thread.currentThread();//当前线程拿到这把锁
+        /*
+        if(thread == null){//假设13号没有被人抢到
+            thread =Thread.currentThread();//把当线程给了13号
         }else{
-            //等待其他线程释放
-        }
-        */
-    }
 
-    @Override
-    public void unlock() {
-        if (owner.compareAndSet(Thread.currentThread(), null)) { //* ---2---
-            //释放锁，告知其他线程，你们可以拿锁了(唤醒所有等待其他线程)
-            Object[] objects = waiter.toArray();//---3---
-            for (Object object : objects) {//遍历， 拿出所有等待的线程  ---3---
-                Thread next = (Thread) object;//---3---
-                LockSupport.unpark(next);//唤醒线程   ---3---
-            }
-        }
-        /*---1---
-        if(Thread.currentThread().equals(thread)){
-            thread = null;
         }
         */
+        AtomicInteger count = new AtomicInteger(0);
+        Thread target = Thread.currentThread();
+        while (!thech13.compareAndSet(null, target)) {
+            int k =count.incrementAndGet();
+            System.out.println("k = " + k);
+            //证明抢输了
+            waiter.add(target);
+            System.out.println("LockSupport.park();前面：thread: " + Thread.currentThread() + " size: " + waiter.size());
+            LockSupport.park();
+            waiter.remove(target);
+            System.out.println("LockSupport.park();后面：thread: " + Thread.currentThread() + " size: " + waiter.size());
+
+
+
+        }
     }
 
     @Override
@@ -62,10 +56,32 @@ public class ZLock implements Lock {
     }
 
     @Override
-    public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+    public boolean tryLock(long l, TimeUnit timeUnit) throws InterruptedException {
         return false;
     }
 
+
+    //
+    @Override
+    public void unlock() {
+        /*
+        if(Thread.currentThread().equals(thread)){
+            thread = null;//释放13 ，把13让给我们的Lance Allen
+        }
+      */
+
+        Thread target = Thread.currentThread();
+        if (thech13.compareAndSet(target, null)) {//AV 服务完了 13 设置为空
+            //把这些等待13号的狼 放出来
+            Thread[] threads = new Thread[waiter.size()];
+            waiter.toArray(threads);
+            for (Thread next : threads) {
+                LockSupport.unpark(next);
+                System.out.println("LockSupport.unpark();：next: " + next);
+//                waiter.remove(next);
+            }
+        }
+    }
 
     @Override
     public Condition newCondition() {

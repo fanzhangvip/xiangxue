@@ -5,7 +5,7 @@ package com.zero.caslib;
  */
 public class Demo01 {
 
-    int i = 0;
+    volatile int i = 0;
 
     public void incr(){
         i++;//加1操作

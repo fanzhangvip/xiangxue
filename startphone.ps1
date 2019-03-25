@@ -1,0 +1,1 @@
+emulator.exe -avd Nexus_5X_API_28_x86 -dns-server 8.8.8.8,114.114.114.114
