@@ -72,11 +72,11 @@ public class BFMain {
                 System.out.println("S[" + i + "]{" + s.charAt(i) + "} != P[" + j + "]{" + p.charAt(j) + "}");
                 System.out.println("因此");
                 //如果不回溯
-//                i = i + 1;
-//                System.out.println("i =" + i + " + 1 = " + (i + 1));
-                int prei = i;
-                i = i - j + 1;// 主串回溯到上次开始匹配的下一个字符
-                System.out.println("i =" + prei + " - " + j + " + 1 = " + (prei -j + 1));
+                i = i + 1;
+                System.out.println("i =" + i + " + 1 = " + (i + 1));
+//                int prei = i;
+//                i = i - j + 1;// 主串回溯到上次开始匹配的下一个字符
+//                System.out.println("i =" + prei + " - " + j + " + 1 = " + (prei -j + 1));
                 j = 0;// 子串从头开始重新匹配
                 System.out.println("j = 0");
             }

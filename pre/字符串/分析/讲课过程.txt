@@ -1,0 +1,43 @@
+字符串：
+二进制 S = "00101101010"
+子串 substr = "010"
+
+程序 String
+
+String s = "abc4"
+
+空子串 substr =""
+前缀prefix = "abc"
+后缀suffix = "bc4"
+
+空串  =》 字串，前缀，后缀
+平凡子串 abc4
+平凡前缀 abc4
+平凡后缀 abc4
+
+真子串 abc
+真前缀 a,ab,abc
+真后缀 bc4,c4,4
+
+00101101010
+ 010
+
+
+BF匹配算法
+主串 
+BBC ABCDAB ABCDABCDABDE
+子串
+ABCDABD
+
+
+BBC ABCDAB ABCDABCDABDE
+               ABCDABD
+
+
+
+
+
+
+
+
+

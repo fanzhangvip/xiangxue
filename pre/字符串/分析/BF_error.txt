@@ -1,4 +1,4 @@
-"C:\Android\Android Studio\jre\bin\java.exe" "-javaagent:C:\Android\Android Studio\lib\idea_rt.jar=51960:C:\Android\Android Studio\bin" -Dfile.encoding=UTF-8 -classpath "C:\Android\Android Studio\jre\jre\lib\charsets.jar;C:\Android\Android Studio\jre\jre\lib\ext\access-bridge-64.jar;C:\Android\Android Studio\jre\jre\lib\ext\cldrdata.jar;C:\Android\Android Studio\jre\jre\lib\ext\dnsns.jar;C:\Android\Android Studio\jre\jre\lib\ext\jaccess.jar;C:\Android\Android Studio\jre\jre\lib\ext\localedata.jar;C:\Android\Android Studio\jre\jre\lib\ext\nashorn.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunec.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunjce_provider.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunmscapi.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunpkcs11.jar;C:\Android\Android Studio\jre\jre\lib\ext\zipfs.jar;C:\Android\Android Studio\jre\jre\lib\jce.jar;C:\Android\Android Studio\jre\jre\lib\jsse.jar;C:\Android\Android Studio\jre\jre\lib\management-agent.jar;C:\Android\Android Studio\jre\jre\lib\resources.jar;C:\Android\Android Studio\jre\jre\lib\rt.jar;D:\xiangxue\source\zifuchuan\zifuchuanlib\build\classes\java\main" com.zero.zifuchuanlib.BFMain
+"C:\Android\Android Studio\jre\bin\java.exe" "-javaagent:C:\Android\Android Studio\lib\idea_rt.jar=61460:C:\Android\Android Studio\bin" -Dfile.encoding=UTF-8 -classpath "C:\Android\Android Studio\jre\jre\lib\charsets.jar;C:\Android\Android Studio\jre\jre\lib\ext\access-bridge-64.jar;C:\Android\Android Studio\jre\jre\lib\ext\cldrdata.jar;C:\Android\Android Studio\jre\jre\lib\ext\dnsns.jar;C:\Android\Android Studio\jre\jre\lib\ext\jaccess.jar;C:\Android\Android Studio\jre\jre\lib\ext\localedata.jar;C:\Android\Android Studio\jre\jre\lib\ext\nashorn.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunec.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunjce_provider.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunmscapi.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunpkcs11.jar;C:\Android\Android Studio\jre\jre\lib\ext\zipfs.jar;C:\Android\Android Studio\jre\jre\lib\jce.jar;C:\Android\Android Studio\jre\jre\lib\jsse.jar;C:\Android\Android Studio\jre\jre\lib\management-agent.jar;C:\Android\Android Studio\jre\jre\lib\resources.jar;C:\Android\Android Studio\jre\jre\lib\rt.jar;D:\xiangxue\source\zifuchuan\zifuchuanlib\build\classes\java\main" com.zero.zifuchuanlib.BFMain
 Hello 字符串匹配算法...
 主串
 BBC ABCDAB ABCDABCDABDE
@@ -101,7 +101,7 @@ S[9]{B} == P[5]{B}
 i++ =10
 j++ =6
 
-=============第[10]回合================//不回溯
+=============第[10]回合================
           | => 10
 BBC ABCDAB ABCDABCDABDE
     ABCDABD
@@ -170,7 +170,7 @@ S[16]{B} == P[5]{B}
 i++ =17
 j++ =6
 
-=============第[17]回合================//没有回溯造成的错误
+=============第[17]回合================
                  | => 17
 BBC ABCDAB ABCDABCDABDE
            ABCDABD
@@ -182,7 +182,7 @@ j = 0
 =============第[18]回合================
                   | => 18
 BBC ABCDAB ABCDABCDABDE
-                  ABCDABD
+               ABCDABD
 S[18]{D} != P[0]{A}
 因此
 i =19 + 1 = 20
@@ -228,6 +228,6 @@ j = 0
 
 i = 23 ,j = 0, pLength: 7
 Match failed.
-BF diff: 3696500
+BF diff: 3923500
 
 Process finished with exit code 0

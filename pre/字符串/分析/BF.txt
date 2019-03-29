@@ -1,0 +1,358 @@
+"C:\Android\Android Studio\jre\bin\java.exe" "-javaagent:C:\Android\Android Studio\lib\idea_rt.jar=61399:C:\Android\Android Studio\bin" -Dfile.encoding=UTF-8 -classpath "C:\Android\Android Studio\jre\jre\lib\charsets.jar;C:\Android\Android Studio\jre\jre\lib\ext\access-bridge-64.jar;C:\Android\Android Studio\jre\jre\lib\ext\cldrdata.jar;C:\Android\Android Studio\jre\jre\lib\ext\dnsns.jar;C:\Android\Android Studio\jre\jre\lib\ext\jaccess.jar;C:\Android\Android Studio\jre\jre\lib\ext\localedata.jar;C:\Android\Android Studio\jre\jre\lib\ext\nashorn.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunec.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunjce_provider.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunmscapi.jar;C:\Android\Android Studio\jre\jre\lib\ext\sunpkcs11.jar;C:\Android\Android Studio\jre\jre\lib\ext\zipfs.jar;C:\Android\Android Studio\jre\jre\lib\jce.jar;C:\Android\Android Studio\jre\jre\lib\jsse.jar;C:\Android\Android Studio\jre\jre\lib\management-agent.jar;C:\Android\Android Studio\jre\jre\lib\resources.jar;C:\Android\Android Studio\jre\jre\lib\rt.jar;D:\xiangxue\source\zifuchuan\zifuchuanlib\build\classes\java\main" com.zero.zifuchuanlib.BFMain
+Hello 字符串匹配算法...
+主串
+BBC ABCDAB ABCDABCDABDE
+子串
+ABCDABD
+sLength: 23 ,pLength:7
+=============第[0]回合================
+| => 0
+BBC ABCDAB ABCDABCDABDE
+ABCDABD
+S[0]{B} != P[0]{A}
+因此
+i =0 - 0 + 1 = 1
+j = 0
+
+=============第[1]回合================
+ | => 1
+BBC ABCDAB ABCDABCDABDE
+ ABCDABD
+S[1]{B} != P[0]{A}
+因此
+i =1 - 0 + 1 = 2
+j = 0
+
+=============第[2]回合================
+  | => 2
+BBC ABCDAB ABCDABCDABDE
+  ABCDABD
+S[2]{C} != P[0]{A}
+因此
+i =2 - 0 + 1 = 3
+j = 0
+
+=============第[3]回合================
+   | => 3
+BBC ABCDAB ABCDABCDABDE
+   ABCDABD
+S[3]{ } != P[0]{A}
+因此
+i =3 - 0 + 1 = 4
+j = 0
+
+=============第[4]回合================
+    | => 4
+BBC ABCDAB ABCDABCDABDE
+    ABCDABD
+    A
+S[4]{A} == P[0]{A}
+因此
+i++ =5
+j++ =1
+
+=============第[5]回合================
+     | => 5
+BBC ABCDAB ABCDABCDABDE
+    ABCDABD
+    AB
+S[5]{B} == P[1]{B}
+因此
+i++ =6
+j++ =2
+
+=============第[6]回合================
+      | => 6
+BBC ABCDAB ABCDABCDABDE
+    ABCDABD
+    ABC
+S[6]{C} == P[2]{C}
+因此
+i++ =7
+j++ =3
+
+=============第[7]回合================
+       | => 7
+BBC ABCDAB ABCDABCDABDE
+    ABCDABD
+    ABCD
+S[7]{D} == P[3]{D}
+因此
+i++ =8
+j++ =4
+
+=============第[8]回合================
+        | => 8
+BBC ABCDAB ABCDABCDABDE
+    ABCDABD
+    ABCDA
+S[8]{A} == P[4]{A}
+因此
+i++ =9
+j++ =5
+
+=============第[9]回合================
+         | => 9
+BBC ABCDAB ABCDABCDABDE
+    ABCDABD
+    ABCDAB
+S[9]{B} == P[5]{B}
+因此
+i++ =10
+j++ =6
+
+=============第[10]回合================
+          | => 10
+BBC ABCDAB ABCDABCDABDE
+    ABCDABD
+S[10]{ } != P[6]{D}
+因此
+i =10 - 6 + 1 = 5
+j = 0
+
+=============第[11]回合================
+     | => 5
+BBC ABCDAB ABCDABCDABDE
+     ABCDABD
+S[5]{B} != P[0]{A}
+因此
+i =5 - 0 + 1 = 6
+j = 0
+
+=============第[12]回合================
+      | => 6
+BBC ABCDAB ABCDABCDABDE
+      ABCDABD
+S[6]{C} != P[0]{A}
+因此
+i =6 - 0 + 1 = 7
+j = 0
+
+=============第[13]回合================
+       | => 7
+BBC ABCDAB ABCDABCDABDE
+       ABCDABD
+S[7]{D} != P[0]{A}
+因此
+i =7 - 0 + 1 = 8
+j = 0
+
+=============第[14]回合================
+        | => 8
+BBC ABCDAB ABCDABCDABDE
+        ABCDABD
+        A
+S[8]{A} == P[0]{A}
+因此
+i++ =9
+j++ =1
+
+=============第[15]回合================
+         | => 9
+BBC ABCDAB ABCDABCDABDE
+        ABCDABD
+        AB
+S[9]{B} == P[1]{B}
+因此
+i++ =10
+j++ =2
+
+=============第[16]回合================
+          | => 10
+BBC ABCDAB ABCDABCDABDE
+        ABCDABD
+S[10]{ } != P[2]{C}
+因此
+i =10 - 2 + 1 = 9
+j = 0
+
+=============第[17]回合================
+         | => 9
+BBC ABCDAB ABCDABCDABDE
+         ABCDABD
+S[9]{B} != P[0]{A}
+因此
+i =9 - 0 + 1 = 10
+j = 0
+
+=============第[18]回合================
+          | => 10
+BBC ABCDAB ABCDABCDABDE
+          ABCDABD
+S[10]{ } != P[0]{A}
+因此
+i =10 - 0 + 1 = 11
+j = 0
+
+=============第[19]回合================
+           | => 11
+BBC ABCDAB ABCDABCDABDE
+           ABCDABD
+           A
+S[11]{A} == P[0]{A}
+因此
+i++ =12
+j++ =1
+
+=============第[20]回合================
+            | => 12
+BBC ABCDAB ABCDABCDABDE
+           ABCDABD
+           AB
+S[12]{B} == P[1]{B}
+因此
+i++ =13
+j++ =2
+
+=============第[21]回合================
+             | => 13
+BBC ABCDAB ABCDABCDABDE
+           ABCDABD
+           ABC
+S[13]{C} == P[2]{C}
+因此
+i++ =14
+j++ =3
+
+=============第[22]回合================
+              | => 14
+BBC ABCDAB ABCDABCDABDE
+           ABCDABD
+           ABCD
+S[14]{D} == P[3]{D}
+因此
+i++ =15
+j++ =4
+
+=============第[23]回合================
+               | => 15
+BBC ABCDAB ABCDABCDABDE
+           ABCDABD
+           ABCDA
+S[15]{A} == P[4]{A}
+因此
+i++ =16
+j++ =5
+
+=============第[24]回合================
+                | => 16
+BBC ABCDAB ABCDABCDABDE
+           ABCDABD
+           ABCDAB
+S[16]{B} == P[5]{B}
+因此
+i++ =17
+j++ =6
+
+=============第[25]回合================
+                 | => 17
+BBC ABCDAB ABCDABCDABDE
+           ABCDABD
+S[17]{C} != P[6]{D}
+因此
+i =17 - 6 + 1 = 12
+j = 0
+
+=============第[26]回合================
+            | => 12
+BBC ABCDAB ABCDABCDABDE
+            ABCDABD
+S[12]{B} != P[0]{A}
+因此
+i =12 - 0 + 1 = 13
+j = 0
+
+=============第[27]回合================
+             | => 13
+BBC ABCDAB ABCDABCDABDE
+             ABCDABD
+S[13]{C} != P[0]{A}
+因此
+i =13 - 0 + 1 = 14
+j = 0
+
+=============第[28]回合================
+              | => 14
+BBC ABCDAB ABCDABCDABDE
+              ABCDABD
+S[14]{D} != P[0]{A}
+因此
+i =14 - 0 + 1 = 15
+j = 0
+
+=============第[29]回合================
+               | => 15
+BBC ABCDAB ABCDABCDABDE
+               ABCDABD
+               A
+S[15]{A} == P[0]{A}
+因此
+i++ =16
+j++ =1
+
+=============第[30]回合================
+                | => 16
+BBC ABCDAB ABCDABCDABDE
+               ABCDABD
+               AB
+S[16]{B} == P[1]{B}
+因此
+i++ =17
+j++ =2
+
+=============第[31]回合================
+                 | => 17
+BBC ABCDAB ABCDABCDABDE
+               ABCDABD
+               ABC
+S[17]{C} == P[2]{C}
+因此
+i++ =18
+j++ =3
+
+=============第[32]回合================
+                  | => 18
+BBC ABCDAB ABCDABCDABDE
+               ABCDABD
+               ABCD
+S[18]{D} == P[3]{D}
+因此
+i++ =19
+j++ =4
+
+=============第[33]回合================
+                   | => 19
+BBC ABCDAB ABCDABCDABDE
+               ABCDABD
+               ABCDA
+S[19]{A} == P[4]{A}
+因此
+i++ =20
+j++ =5
+
+=============第[34]回合================
+                    | => 20
+BBC ABCDAB ABCDABCDABDE
+               ABCDABD
+               ABCDAB
+S[20]{B} == P[5]{B}
+因此
+i++ =21
+j++ =6
+
+=============第[35]回合================
+                     | => 21
+BBC ABCDAB ABCDABCDABDE
+               ABCDABD
+               ABCDABD
+S[21]{D} == P[6]{D}
+因此
+i++ =22
+j++ =7
+
+j = 7 >= tLength =7
+index = i - j =15
+Successful match,index is:15
+BF diff: 10493100
+
+Process finished with exit code 0

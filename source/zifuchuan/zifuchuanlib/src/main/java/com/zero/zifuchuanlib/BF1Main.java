@@ -36,14 +36,13 @@ public class BF1Main {
         }
         int i = 0;
         int j = 0;
-        StringBuffer equalschars = new StringBuffer();
         while (i < sLength && j < pLength) {
             if (s.charAt(i) == p.charAt(j)) {// 判断对应位置的字符是否相等
-                equalschars.append(p.charAt(j));
                 i++;// 若相等，主串、子串继续依次比较
                 j++;
             } else {// 若不相等
                 i = i - j + 1;// 主串回溯到上次开始匹配的下一个字符
+//                i = i + 1;//主串不回溯
                 j = 0;// 子串从头开始重新匹配
             }
         }

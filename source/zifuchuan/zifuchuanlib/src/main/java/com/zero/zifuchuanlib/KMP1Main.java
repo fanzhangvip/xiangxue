@@ -65,7 +65,7 @@ public class KMP1Main {
                 /*
                  * 如果j != -1，且当前字符匹配失败， 则令 i 不变，j = next[j], next[j]即为j所对应的next值
                  */
-                j = next[j];
+                j = next[j];//等价于 向右移动的步长j - next[j]
             }
         }
         if (j >= pLength) {// 匹配成功
