@@ -234,12 +234,153 @@ dependencies:
                   ),
                 ),
 ```
+### redux进阶
+#### redux中间件介绍：
+* Redux middleware 提供了一个分类处理 action 的机会。在 middleware 中，我们可以检阅每一个流过的 action,并挑选出特定类型的 action 
+进行相应操作，以此来改变 action。这样说起来可能会有点抽象，我们直接来看图，这是在没有中间件情况下的 redux 的数据流：
 
-9. 如何处理异步数据
-添加redux_thunk
+    ![](./img/redux_middleware_1.png)
 
-10. 状态持久化
-添加redux_persist_flutter 
+* 上面是很典型的一次 redux 的数据流的过程，但在增加了 middleware 后，我们就可以在这途中对 action 进行截获，并进行改变。
+且由于业务场景的多样性，单纯的修改 dispatch 和 reduce 显然不能满足大家的需要，因此对 redux middleware 的设计理念是可以自由组合，
+自由插拔的插件机制。也正是由于这个机制，我们在使用 middleware 时，我们可以通过串联不同的 middleware 来满足日常的开发需求，
+每一个 middleware 都可以处理一个相对独立的业务需求且相互串联：
+
+   ![](./img/redux_middleware_2.png) 
+
+#### 使用步骤:
+1. 创建一个产生中间件的工厂类，利用generate产生中间件
+```dart
+///第一步创建一个产生中间件的工厂类，
+///利用generate产生中间件
+abstract class MiddlewareFactory {
+  MiddlewareFactory();
+
+  List<Middleware<CountState>> generate();
+}
+```
+2. 通过new TypedMiddleware的方式创建中间件
+```dart
+class LoggerMiddle extends MiddlewareFactory {
+  @override
+  List<Middleware<CountState>> generate() {
+    // TODO: implement generate
+    ///第二步 通过new TypedMiddleware的方式创建中间件
+    ///其实实现中间件有两种方式
+    ///1.new TypedMiddleware
+    ///2.class TypedMiddleware<State, Action> implements MiddlewareClass<State> 
+    ///TypedMiddleware是通过实现MiddlewareClass的call接口处理action的
+    ///那么我们也可以自己实现MiddlewareClass的call接口来实现我们的中间件
+    return [
+      TypedMiddleware<CountState, IncreAction>(_doIncreLogger),
+      TypedMiddleware<CountState, DecreAction>(_doDecreLogger),
+    ];
+  }
+
+  void _doIncreLogger(
+      Store<CountState> store, IncreAction action, NextDispatcher next) {
+    next(action);
+    debugPrint(
+        "store:${store.state.count}, action type ${action.type}, value ${action.value}");
+  }
+
+  void _doDecreLogger(
+      Store<CountState> store, DecreAction action, NextDispatcher next) {
+    next(action);
+    debugPrint(
+        "store:${store.state.count}, action type ${action.type}, value ${action.value}");
+  }
+}
+```
+3. 把所有的中间件集合到一起
+```dart
+///第三步 把所有的中间件集合到一起
+List<Middleware<CountState>> initMiddleware() {
+  List<Middleware<CountState>> middlewares = [];
+  List<MiddlewareFactory> factories = [
+    LoggerMiddle(),
+    ThunkMiddle(),
+  ];
+  factories.forEach((factory) => middlewares.addAll(factory.generate()));
+  return middlewares;
+}
+```
+4. 把所有的中间件都放到Store里面
+```dart
+final store = Store<CountState>(reducers
+  ,initialState: CountState.initState()
+      ///第四步，把所有的中间件都放到Store里面
+    ,middleware: initMiddleware());
+```
+#### 添加redux_thunk支持异步操作
+1. redux_thunk原理
+```dart
+void thunkMiddleware<State>(
+  Store<State> store,
+  dynamic action,
+  NextDispatcher next,
+) {
+  if (action is ThunkAction<State>) {
+    action(store);
+  } else {
+    next(action);
+  }
+}
+
+typedef void ThunkAction<State>(Store<State> store);
+///以上就是整个redux_thunk的源码，
+///1. 先定义一个ThunkAction类型的异步处理Action函数
+///2. 然后把这个ThunkAction放入到thunkMiddleware处理函数里面
+///3. 其实这就是一个中间件的应用而已
+```
+1. 创建一个ThunkAction类型的异步Action处理函数
+```dart
+///第一步 创建一个ThunkAction类型的异步Action处理函数
+ThunkAction asyncIncrement(int value){
+  return (Store store) async {
+    await Future.delayed(Duration(seconds: 3));
+    store.dispatch(IncreAction(value));
+  };
+}
+```
+2. 创建一个异步处理的中间件俩处理我们的Thunk类型的函数
+```dart
+class ThunkMiddle extends MiddlewareFactory {
+  @override
+  List<Middleware<CountState>> generate() {
+    // TODO: implement generate
+    return [
+      ///第二步 创建一个异步处理的中间件俩处理我们的Thunk类型的函数
+      TypedMiddleware<CountState, ThunkAction>(_doThunk),
+    ];
+  }
+
+  void _doThunk(
+      Store<CountState> store, ThunkAction action, NextDispatcher next) {
+    if (action is ThunkAction<CountState>) {
+      action(store);
+    } else {
+      next(action);
+    }
+  }
+}
+```
+3. 一起放到中间件集合里面
+```dart
+///第三步 把所有的中间件集合到一起
+List<Middleware<CountState>> initMiddleware() {
+  List<Middleware<CountState>> middlewares = [];
+  List<MiddlewareFactory> factories = [
+    LoggerMiddle(),
+    ///第三步，一起放入到中间件集合
+    ThunkMiddle(),
+  ];
+  factories.forEach((factory) => middlewares.addAll(factory.generate()));
+  return middlewares;
+}
+```
+#### 状态持久化
+添加redux_persist_flutter 或者自己把Store里面的State序列化到本地文件，然后启动的时候反序列化出来就可
 
 
 
