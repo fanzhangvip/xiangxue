@@ -5,32 +5,23 @@
     android:id="@+id/test"
     app:startDestination="@id/oneFragment5">
 
-
     <fragment
         android:id="@+id/oneFragment5"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment"
         android:label="fragment_1"
         tools:layout="@layout/fragment_1" >
         <action
-            android:id="@+id/action_oneFragment5_to_twoFragment"
-            app:destination="@id/twoFragment" />
+            android:id="@+id/action_oneFragment5_to_oneFragment12"
+            app:destination="@id/oneFragment12" />
     </fragment>
     <fragment
-        android:id="@+id/twoFragment"
-        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.TwoFragment"
-        android:label="fragment_2"
-        tools:layout="@layout/fragment_2" >
-        <action
-            android:id="@+id/action_twoFragment_to_mainActivity"
-            app:destination="@id/mainActivity" />
-        <action
-            android:id="@+id/action_twoFragment_to_navigation_1"
-            app:destination="@id/navigation_1" />
-    </fragment>
+        android:id="@+id/oneFragment12"
+        android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.fragment.OneFragment1"
+        android:label="fragment_11"
+        tools:layout="@layout/fragment_11" />
     <activity
         android:id="@+id/mainActivity"
         android:name="com.example.xiangxue.enjoyfragmentnavigationdemo.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
-    <include app:graph="@navigation/navigation_1" />
+        android:label="MainActivity" />
+    <include app:graph="@navigation/nav_graph" />
 </navigation>

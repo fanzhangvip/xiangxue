@@ -52,6 +52,8 @@ public class OneFragment2 extends Fragment {
     public void myClick(View view) {
 //        oneFragment.switchFragment(OneFragment2.class.getName(), OneFragment3.newIntance(oneFragment));
         Navigation.findNavController(view).navigate(R.id.action_oneFragment2_to_oneFragment3);
+        //1. findNavController view  导航管理者 从哪儿来的？
+        //2.navigate 导航action id ？
     }
 
 
