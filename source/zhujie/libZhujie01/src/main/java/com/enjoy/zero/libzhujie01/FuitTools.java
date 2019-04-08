@@ -4,6 +4,8 @@ import java.io.FileOutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import sun.misc.ProxyGenerator;
+
 //import sun.misc.ProxyGenerator;
 
 /**
@@ -19,22 +21,22 @@ public class FuitTools {
     /**
      * 生成代理类文件
      */
-//    public static void generyProxyFile() {
-//        byte[] classFile = ProxyGenerator.generateProxyClass("fruitProxy0", FruitName.class.getInterfaces());
-//        String path = "./fruitProxy0.class";
-//        try {
-//            FileOutputStream fos = new FileOutputStream(path);
-//            fos.write(classFile);
-//            fos.flush();
-//            System.out.println("代理类class文件写入成功");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("写入出错类");
-//        }
-//    }
+    public static void generyProxyFile() {
+        byte[] classFile = ProxyGenerator.generateProxyClass("fruitProxy0", FruitName.class.getInterfaces());
+        String path = "./fruitProxy0.class";
+        try {
+            FileOutputStream fos = new FileOutputStream(path);
+            fos.write(classFile);
+            fos.flush();
+            System.out.println("代理类class文件写入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("写入出错类");
+        }
+    }
 
     public static void getFruitInfo(Class<?> clazz) {
-
+        generyProxyFile();
         // TODO: 使用反射获取所有字段
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {

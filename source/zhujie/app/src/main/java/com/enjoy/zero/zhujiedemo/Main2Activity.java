@@ -5,11 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
 
 
     private TextView mTextView;
-
 
      Button mButton;
      Button mButton1;
@@ -29,7 +29,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
      Button mButton15;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //初始化UI

@@ -1,17 +1,11 @@
 package com.enjoy.zero.libdemo;
 
-/**
- * [享学课堂] {@link https://enjoy.ke.qq.com}
- * 学无止境，让学习成为一种享受
- * TODO: 主讲Zero老师QQ 2124346685
- * TODO: 往期课程咨询芊芊老师QQ 2130753077
- * TODO: VIP课程咨询安生老师QQ 669100976
- * 类说明:
+/*
+ 1. 抽象主题
+ 2. 定义了真实主题类(被委托类，被代理类)与代理类(委托类)的共同的业务接口
  */
 public interface IPlayer {
-
-    /**
-     * 共同业务 拍电影
-     */
-    void film();
+    void film();//拍电影的业务
 }
+
+//public abstract class IPlayer{}//1. 为什么？

@@ -34,6 +34,8 @@ public @interface FruitProducerFactory {
      */
     public String address() default "";
 
+//    Apple value();
+
 
 
 }

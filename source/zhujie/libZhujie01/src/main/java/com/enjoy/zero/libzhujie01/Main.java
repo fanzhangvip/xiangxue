@@ -11,14 +11,19 @@ import java.lang.reflect.AnnotatedElement;
  * TODO: VIP课程咨询伊娜老师QQ 2133576719
  * 类说明:
  */
+@Test
 public class Main {
 
     Runnable r1 = () -> { System.out.println(this); };
     Runnable r2 = () -> { System.out.println(toString()); };
+    @Test
     public String toString() {  return "Hello, world"; }
 
-    public static void main(String[] args) {
+    @Test
+    public static void main(@Test String[] args) {
         System.out.println(" Hello world");
+
+        @Test
         Apple apple = new Apple();
         FuitTools.getFruitInfo(Apple.class);
 
